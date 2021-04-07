@@ -74,3 +74,22 @@ To download and show your balances for an exchange you need to enable the exchan
 BINANCE_ENABLED=true
 ```
 
+3. How to access
+
+To access the software execute the following lines on the terminal
+<pre>
+docker inspect php-webserver
+</pre>
+
+The output of this command will be like this
+```
+...
+"Gateway": "xxx.xxx.xxx.xxx",
+"IPAddress": "xxx.xxx.xxx.xxx",
+"IPPrefixLen": xx,
+...
+```
+
+Get the IP of the key IPAddress and put it on your web browser.
+
+Enjoy!
