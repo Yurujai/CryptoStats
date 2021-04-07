@@ -19,6 +19,8 @@ help:
 	@echo '    clean                 Remove all the containers'
 	@echo '    pull                  Download containers images'
 	@echo '    logs                  Show the log of all services'
+	@echo '    install               Install dependencies'
+	@echo '    cache                 Clear cache'
 	@echo '    help (default)        Show make options'
 
 .PHONY: start
@@ -40,3 +42,11 @@ pull:
 .PHONY: logs
 logs:
 	docker-compose -f docker-compose.yml logs --tail=100 -f
+
+.PHONY: install
+install:
+	docker-compose -f docker-compose.yml run --service-ports php-fpm composer install
+
+PHONY: cache
+cache:
+	docker-compose -f docker-compose.yml run --service-ports php-fpm bin/console c:c
