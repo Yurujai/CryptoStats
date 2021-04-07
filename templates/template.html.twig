@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ "Crypto Stats - Home"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {{ render(controller('App\\Controller\\StatsController::statsGlobal')) }}
+    <div class="row">
+        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'binance'})) }}
+        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'bitvavo'})) }}
+        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'kukoin'})) }}
+        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'coinbase'})) }}
+    </div>
+
+
+    {{ render(controller('App\\Controller\\StatsController::statsByMarket')) }}
+{% endblock %}

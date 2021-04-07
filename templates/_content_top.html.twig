@@ -1,0 +1,24 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark navbar-menu">
+    <div class="container-fluid">
+
+        <h4 style="color:#fff;">{{ "Crypto Stats Platform"|trans }}
+        {% if app.request.get('_route') != 'crypto_stats' %}
+            <a href="{{ path('crypto_stats') }}" class="btn btn-info text-left">
+                <i class="fas fa-align-left"></i>
+                <span>Global stats</span>
+            </a>
+        {% endif %}
+        </h4>
+        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+        </button>
+
+        <div class="text-right">
+            <a href="#" title="{{ "Update wallets"|trans }}" class="update-element" data-url="{{ path('crypto_stats_update_wallets') }}">
+                <small><i class="fa fa-arrow-up"></i></small><strong style="font-size:36px;">W</strong>
+            </a>
+        </div>
+    </div>
+</nav>
+
+

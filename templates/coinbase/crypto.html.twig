@@ -1,0 +1,81 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ "Crypto Stats - Bitvavo"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {% include "_header.html.twig" with {'title': ''} %}
+
+    <div class="container-fluid">
+        <div class="row">
+        <div class="col-6">
+            <div class="alert alert-warning">
+                <h4 class="text-center">{{ "Buy"|trans }}</h4>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">orderId</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Fee</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in trades|filter(item => item.type == 1) %}
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ item.orderId }}</td>
+                            <td>{{ item.timestamp }}</td>
+                            <td>{{ item.amount }}</td>
+                            <td>{{ item.price|number_format(4) }}</td>
+                            <td>{{ item.fee|number_format(4) ~ ' ' ~ item.currency }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="alert alert-warning">
+                <h4 class="text-center">{{ "Sell"|trans }}</h4>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">orderId</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Fee</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in trades|filter(item => item.type == 0) %}
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ item.orderId }}</td>
+                            <td>{{ item.timestamp }}</td>
+                            <td>{{ item.amount }}</td>
+                            <td>{{ item.price|number_format(4) }}</td>
+                            <td>{{ item.fee|number_format(4) ~ ' ' ~ item.currency }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+    </div>
+
+{% endblock %}

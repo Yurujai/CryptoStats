@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ "Crypto Stats - Binance"|trans }}{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row">
+            {% for item in balance|filter(item => item.amount|number_format(8) > 0) %}
+                {% include "crypto/_crypto_template.html.twig" with {'exchange_path': 'crypto_trades_exchange_binance' } %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
