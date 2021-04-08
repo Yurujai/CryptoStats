@@ -16,6 +16,7 @@
                         <span class="text-success">
                             {% if item.inOrder > 0 %}
                                 <i class="fa fa-arrow-up"></i>
+                                {{ item.inOrder|number_format(2) }}
                             {% else %}
                                 <strong>0</strong>
                             {% endif %}
