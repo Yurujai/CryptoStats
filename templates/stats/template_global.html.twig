@@ -2,15 +2,5 @@
     {% include "/stats/_block.html.twig" with {'headerText': 'Total'|trans, 'icon': 'fa-dollar-sign', 'value': globalUSD|number_format(2) } %}
     {% include "/stats/_block.html.twig" with {'headerText': 'Total'|trans, 'icon': 'fa-euro-sign', 'value': globalEUR|number_format(2) } %}
     {% include "/stats/_block.html.twig" with {'headerText': 'Wallets'|trans, 'icon': 'fa-coins', 'value': numberOfCrypto } %}
-
-    {% set profit = 0 %}
-    {% if investment %}
-        {% if investment.currency == 'usd' %}
-            {% set profit = ((globalUSD*100/investment.amount)-100)|number_format(2) %}
-        {% else %}
-            {% set profit = ((globalEUR*100/investment.amount)-100)|number_format(2) %}
-        {% endif %}
-    {% endif %}
-
-    {% include "/stats/_block.html.twig" with {'headerText': 'Profit'|trans, 'icon': 'fa-percent', 'value': profit } %}
+    {% include "/stats/_block.html.twig" with {'headerText': 'Profit'|trans, 'icon': 'fa-percent', 'value': profit|number_format(2) } %}
 </div>

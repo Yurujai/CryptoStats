@@ -18,8 +18,13 @@ class InvestmentService
 
     public function addInvestment(float $amount, string $currency): Investment
     {
-        $investment = new Investment((float) $amount, $currency);
-        $this->documentManager->persist($investment);
+        if ($investment = $this->getInvestment()) {
+            $investment->setAmount($amount);
+            $investment->setCurrency($currency);
+        } else {
+            $investment = new Investment($amount, $currency);
+            $this->documentManager->persist($investment);
+        }
         $this->documentManager->flush();
 
         return $investment;

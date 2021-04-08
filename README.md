@@ -92,4 +92,24 @@ The output of this command will be like this
 
 Get the IP of the key IPAddress and put it on your web browser.
 
+
+4. How to add investment amount
+
+Use the next url to add
+<pre>
+{Ip}/investment/add/{amount}/{currency}
+</pre>
+
+Where:
+
+Amount: Total amount of your investment
+Currency: "usd" or "eur"
+
+Example
+<pre>
+{Ip}/investment/add/1000/eur
+</pre>
+
+
+
 Enjoy!

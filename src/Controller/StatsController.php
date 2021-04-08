@@ -41,11 +41,18 @@ class StatsController extends AbstractController
             $globalUSD += $wallets[$key]['totalUSD'];
         }
 
+        $profit = 0;
+        if ($investment && 'eur' === $investment->getCurrency()) {
+            $profit = ($globalEUR - $investment->getAmount()) / $investment->getAmount() * 100;
+        } elseif ($investment && 'usd' === $investment->getCurrency()) {
+            $profit = ($globalUSD - $investment->getAmount()) / $investment->getAmount() * 100;
+        }
+
         return $this->render('/stats/template_global.html.twig', [
             'globalEUR' => $globalEUR,
             'globalUSD' => $globalUSD,
             'numberOfCrypto' => count($wallets),
-            'investment' => $investment,
+            'profit' => $profit,
         ]);
     }
 
