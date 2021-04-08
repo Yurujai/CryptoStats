@@ -28,6 +28,7 @@ class BinanceExchangeService implements ExchangeInterface
     public function getAPIBalance(): array
     {
         $api = $this->createInstance();
+        $api->useServerTime();
 
         return $api->balances();
     }
