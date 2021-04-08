@@ -9,4 +9,10 @@ If you want to add an improvement or contribute to the software, do not hesitate
 Next steps:
 
 1. Add new exchange gate.io
+2. Add prices to coin rows
+3. Rename wallets as "Coins"
+4. Add coingecko links to the coins (Maybe a landpage per coin?)
+5. Add links to relevant coin news (Possible agregator: https://cryptopanic.com/)
+
+
 
