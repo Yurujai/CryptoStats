@@ -6,23 +6,19 @@ namespace App\Controller;
 
 use App\Service\InvestmentService;
 use App\Service\WalletService;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class StatsController extends AbstractController
 {
-    private $documentManager;
     private $walletService;
     private $investmentService;
 
     public function __construct(
-        DocumentManager $documentManager,
         WalletService $walletService,
         InvestmentService $investmentService
     ) {
-        $this->documentManager = $documentManager;
         $this->walletService = $walletService;
         $this->investmentService = $investmentService;
     }
@@ -37,8 +33,8 @@ class StatsController extends AbstractController
         $globalEUR = 0;
         $globalUSD = 0;
         foreach ($wallets as $key => $wallet) {
-            $globalEUR += $wallets[$key]['totalEUR'];
-            $globalUSD += $wallets[$key]['totalUSD'];
+            $globalEUR += $wallets[$key]['totalEUR'] + $wallets[$key]['inOrderEUR'];
+            $globalUSD += $wallets[$key]['totalUSD'] + $wallets[$key]['inOrderUSD'];
         }
 
         $profit = 0;

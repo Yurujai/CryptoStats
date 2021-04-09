@@ -10,10 +10,8 @@ Next steps:
 
 1. Add new exchange gate.io
 2. Add prices to coin rows
-3. Rename wallets as "Coins"
 4. Add coingecko links to the coins (Maybe a landpage per coin?)
 5. Add links to relevant coin news (Possible agregator: https://cryptopanic.com/)
-6. Add amounts of coins "In orders to the general balance"
 
 
 

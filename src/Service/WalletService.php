@@ -96,6 +96,8 @@ class WalletService
                 'exchange' => ['$addToSet' => '$exchange'],
                 'totalEUR' => ['$sum' => ['$multiply' => ['$eurPrice', '$amount']]],
                 'totalUSD' => ['$sum' => ['$multiply' => ['$usdPrice', '$amount']]],
+                'inOrderEUR' => ['$sum' => ['$multiply' => ['$eurPrice', '$inOrder']]],
+                'inOrderUSD' => ['$sum' => ['$multiply' => ['$usdPrice', '$inOrder']]],
                 'inOrder' => ['$sum' => '$inOrder'],
             ],
         ];

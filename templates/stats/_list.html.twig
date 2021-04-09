@@ -10,6 +10,7 @@
                     <td>{{ "Crypto"|trans }}</td>
                     <td>{{ "Exchange"|trans }}</td>
                     <td>{{ "Amount"|trans }}</td>
+                    <td>{{ "inOrder"|trans }}</td>
                     <td>{{ "EUR"|trans }}</td>
                     <td>{{ "USD"|trans }}</td>
                     <td>{{ "Percentage"|trans }}</td>
@@ -21,8 +22,9 @@
                         <td>{{ item._id|upper}}</td>
                         <td><small>{{ item.exchange|join(" ") }}</small></td>
                         <td>{{ item.amount|number_format(8) }}</td>
-                        <td>{{ item.totalEUR|number_format(2) }}&euro;</td>
-                        <td>{{ item.totalUSD|number_format(2) ~ '$' }}</td>
+                        <td>{{ item.inOrder|number_format(8) }}</td>
+                        <td>{{ (item.totalEUR + item.inOrderEUR)|number_format(2) }}&euro;</td>
+                        <td>{{ (item.totalUSD + item.inOrderUSD)|number_format(2) ~ '$' }}</td>
                         <td>{{ item.percentage|number_format(2) }}%</td>
                     </tr>
                 {% endfor %}
@@ -34,7 +36,6 @@
 
 <script>
     window.onload = function () {
-
         var chart = new CanvasJS.Chart("chartContainer", {
             animationEnabled: true,
             backgroundColor: "transparent",
@@ -48,6 +49,5 @@
             }]
         });
         chart.render();
-
     }
 </script>
