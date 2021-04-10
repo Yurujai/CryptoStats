@@ -88,6 +88,9 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
+    "gateio/gateapi-php": {
+        "version": "5.20.1"
+    },
     "guzzlehttp/guzzle": {
         "version": "6.5.5"
     },

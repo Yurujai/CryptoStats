@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37c65c0158371499d60635058ffd4406",
+    "content-hash": "a2dfe4219730e6cf656cc2e61db522a3",
     "packages": [
         {
             "name": "bitvavo/php-bitvavo-api",
@@ -1243,6 +1243,66 @@
                 }
             ],
             "time": "2021-01-14T21:52:44+00:00"
+        },
+        {
+            "name": "gateio/gateapi-php",
+            "version": "5.20.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gateio/gateapi-php.git",
+                "reference": "a00b0ff2f19ac023cf40700d6c1595f15e9e95c1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gateio/gateapi-php/zipball/a00b0ff2f19ac023cf40700d6c1595f15e9e95c1",
+                "reference": "a00b0ff2f19ac023cf40700d6c1595f15e9e95c1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "guzzlehttp/guzzle": "^6.2",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "~2.14",
+                "phpunit/phpunit": "^7.4",
+                "squizlabs/php_codesniffer": "~2.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GateApi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "unlicense"
+            ],
+            "authors": [
+                {
+                    "name": "GateIO",
+                    "homepage": "https://www.gate.io"
+                }
+            ],
+            "description": "Welcome to Gate.io API  APIv4 provides spot, margin and futures trading operations. There are public APIs to retrieve the real-time market statistics, and private APIs which needs authentication to trade on user's behalf.",
+            "homepage": "https://www.gate.io",
+            "keywords": [
+                "api",
+                "gate",
+                "openapi",
+                "openapi-generator",
+                "openapitools",
+                "php",
+                "rest",
+                "sdk"
+            ],
+            "support": {
+                "issues": "https://github.com/gateio/gateapi-php/issues",
+                "source": "https://github.com/gateio/gateapi-php/tree/5.20.1"
+            },
+            "time": "2021-03-29T04:03:12+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

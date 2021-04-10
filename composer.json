@@ -10,6 +10,7 @@
         "coinbase/coinbase": "^2.8",
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/mongodb-odm-bundle": "^4.3",
+        "gateio/gateapi-php": "^5.20",
         "jaggedsoft/php-binance-api": "^0.5.25",
         "kucoin/kucoin-php-sdk": "~1.1.0",
         "league/csv": "^9.6",
