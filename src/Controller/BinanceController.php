@@ -28,10 +28,11 @@ class BinanceController extends AbstractController
     /**
      * @Route("/binance", name="crypto_stats_exchange_binance")
      */
-    public function showGlobalStats(): Response
+    public function balance(): Response
     {
-        return $this->render('binance/template.html.twig', [
+        return $this->render('exchange/template.html.twig', [
             'balance' => $this->walletService->aggregateWallets(BinanceExchangeUtils::getDefaultExchangeName()),
+            'exchange' => BinanceExchangeUtils::getDefaultExchangeName(),
         ]);
     }
 

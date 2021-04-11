@@ -30,6 +30,11 @@ class InvestmentService
         return $investment;
     }
 
+    public function getAll()
+    {
+        return $this->documentManager->getRepository(Investment::class)->findAll();
+    }
+
     public function getInvestment()
     {
         return $this->documentManager->getRepository(Investment::class)->findOneBy([]);

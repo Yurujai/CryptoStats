@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ "Crypto Stats - Investment"|trans }}{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row">
+{#            {{ dump(investments) }}#}
+            {% include "/investment/_form.html.twig" %}
+            {% include "/investment/_list.html.twig" %}
+        </div>
+    </div>
+
+{% endblock %}

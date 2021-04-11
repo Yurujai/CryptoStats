@@ -1,6 +1,0 @@
-<div class="row">
-    {% include "/stats/_block.html.twig" with {'headerText': 'Total'|trans, 'icon': 'fa-dollar-sign', 'value': globalUSD|number_format(2) } %}
-    {% include "/stats/_block.html.twig" with {'headerText': 'Total'|trans, 'icon': 'fa-euro-sign', 'value': globalEUR|number_format(2) } %}
-    {% include "/stats/_block.html.twig" with {'headerText': 'Crypto'|trans, 'icon': 'fa-coins', 'value': numberOfCrypto } %}
-    {% include "/stats/_block.html.twig" with {'headerText': 'Profit'|trans, 'icon': 'fa-percent', 'value': profit|number_format(2) } %}
-</div>

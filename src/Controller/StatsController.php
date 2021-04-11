@@ -44,11 +44,12 @@ class StatsController extends AbstractController
             $profit = ($globalUSD - $investment->getAmount()) / $investment->getAmount() * 100;
         }
 
-        return $this->render('/stats/template_global.html.twig', [
+        return $this->render('/stats/global/template.html.twig', [
             'globalEUR' => $globalEUR,
             'globalUSD' => $globalUSD,
             'numberOfCrypto' => count($wallets),
             'profit' => $profit,
+            'investment' => $investment,
         ]);
     }
 
@@ -95,7 +96,7 @@ class StatsController extends AbstractController
             $globalEUR += $wallet['totalEUR'];
         }
 
-        return $this->render('/stats/_block_exchange.html.twig', [
+        return $this->render('/stats/global/_exchange.html.twig', [
             'globalUSD' => $globalUSD,
             'globalEUR' => $globalEUR,
             'exchange' => $exchange,

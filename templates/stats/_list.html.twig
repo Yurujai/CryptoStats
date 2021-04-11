@@ -1,7 +1,7 @@
 <div class="col-6">
     <div class="card border-left-primary shadow h-100">
         <div class="card-header">
-            Market stats
+            {{ "Wallet list"|trans }}
         </div>
         <div class="card-body">
             <table id="table-data" class="table table-md table-responsive table-striped">
@@ -23,7 +23,7 @@
                         <td><small>{{ item.exchange|join(" ") }}</small></td>
                         <td>{{ item.amount|number_format(8) }}</td>
                         <td>{{ item.inOrder|number_format(8) }}</td>
-                        <td>{{ (item.totalEUR + item.inOrderEUR)|number_format(2) }}&euro;</td>
+                        <td>{{ (item.totalEUR + item.inOrderEUR)|number_format(2) }}€</td>
                         <td>{{ (item.totalUSD + item.inOrderUSD)|number_format(2) ~ '$' }}</td>
                         <td>{{ item.percentage|number_format(2) }}%</td>
                     </tr>

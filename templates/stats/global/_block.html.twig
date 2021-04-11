@@ -7,11 +7,11 @@
                         {{ headerText }}
                     </div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        {{ value }}
+                        {{ value }} {% if value2 is defined %} / {{ value2 }}{% endif %}
                     </div>
                 </div>
                 <div class="col-auto">
-                    <i class="fas {{ icon }} fa-2x text-gray-300"></i>
+                    <i class="{{ icon }} fa-2x text-gray-300"></i>
                 </div>
             </div>
         </div>

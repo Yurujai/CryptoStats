@@ -28,10 +28,11 @@ class KukoinController extends AbstractController
     /**
      * @Route("/kukoin", name="crypto_stats_exchange_kukoin")
      */
-    public function showGlobalStats(): Response
+    public function balance(): Response
     {
         return $this->render('kukoin/template.html.twig', [
             'balance' => $this->walletService->aggregateWallets(KukoinExchangeUtils::getDefaultExchangeName()),
+            'exchange' => KukoinExchangeUtils::getDefaultExchangeName(),
         ]);
     }
 

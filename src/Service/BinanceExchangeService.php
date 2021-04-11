@@ -17,7 +17,7 @@ class BinanceExchangeService implements ExchangeInterface
         $this->walletService = $walletService;
     }
 
-    public function createInstance()
+    public function createInstance(): API
     {
         return new API(
             BinanceExchangeUtils::getApiKey(),

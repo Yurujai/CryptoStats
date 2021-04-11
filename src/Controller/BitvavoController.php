@@ -28,10 +28,11 @@ class BitvavoController extends AbstractController
     /**
      * @Route("/bitvavo", name="crypto_stats_exchange_bitvavo")
      */
-    public function showGlobalStats(): Response
+    public function balance(): Response
     {
-        return $this->render('bitvavo/template.html.twig', [
+        return $this->render('exchange/template.html.twig', [
             'balance' => $this->walletService->aggregateWallets(BitvavoExchangeUtils::getDefaultExchangeName()),
+            'exchange' => BitvavoExchangeUtils::getDefaultExchangeName(),
         ]);
     }
 

@@ -28,10 +28,11 @@ class CoinbaseController extends AbstractController
     /**
      * @Route("/coinbase", name="crypto_stats_exchange_coinbase")
      */
-    public function showGlobalStats(): Response
+    public function balance(): Response
     {
-        return $this->render('coinbase/template.html.twig', [
+        return $this->render('exchange/template.html.twig', [
             'balance' => $this->walletService->aggregateWallets(CoinbaseExchangeUtils::getDefaultExchangeName()),
+            'exchange' => CoinbaseExchangeUtils::getDefaultExchangeName(),
         ]);
     }
 
