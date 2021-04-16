@@ -80,7 +80,11 @@ class BinanceExchangeService implements ExchangeInterface
     {
         $api = $this->createInstance();
         try {
-            $price = $api->price($market.'USDT');
+            try {
+                $price = $api->price($market.'USDT');
+            } catch (\Exception $exception) {
+                $price = $api->price($market.'BUSD');
+            }
         } catch (\Exception $exception) {
             throw new \Exception('Market not found');
         }
