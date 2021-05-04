@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\BinanceExchangeService;
-use App\Service\WalletService;
 use App\Utils\BinanceExchangeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,14 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BinanceController extends AbstractController
 {
-    private $walletService;
     private $binanceExchangeService;
 
-    public function __construct(
-        WalletService $walletService,
-        BinanceExchangeService $binanceExchangeService
-    ) {
-        $this->walletService = $walletService;
+    public function __construct(BinanceExchangeService $binanceExchangeService)
+    {
         $this->binanceExchangeService = $binanceExchangeService;
     }
 
@@ -31,7 +26,7 @@ class BinanceController extends AbstractController
     public function balance(): Response
     {
         return $this->render('exchange/template.html.twig', [
-            'balance' => $this->walletService->aggregateWallets(BinanceExchangeUtils::getDefaultExchangeName()),
+            'balance' => $this->binanceExchangeService->aggregateWallets(),
             'exchange' => BinanceExchangeUtils::getDefaultExchangeName(),
         ]);
     }

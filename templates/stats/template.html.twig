@@ -1,4 +1,3 @@
-<div class="row">
-    {% include "/stats/_list.html.twig" %}
-    {% include "/stats/_donut.html.twig" %}
-</div>
+{{ render(controller('App\\Controller\\StatsController::listOfCryptoBlock')) }}
+{{ render(controller('App\\Controller\\StatsController::donutChart')) }}
+

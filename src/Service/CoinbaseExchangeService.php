@@ -73,4 +73,14 @@ class CoinbaseExchangeService implements ExchangeInterface
         }
         $this->walletService->save();
     }
+
+    public function aggregateWallets(): array
+    {
+        return $this->walletService->aggregateWallets(['exchange' => CoinbaseExchangeUtils::getDefaultExchangeName()]);
+    }
+
+    public function removeWallets()
+    {
+        $this->walletService->removeWallets(CoinbaseExchangeUtils::getDefaultExchangeName());
+    }
 }

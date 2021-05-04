@@ -94,4 +94,14 @@ class GateIOExchangeService implements ExchangeInterface
 
         return (float) $price[0]->getLast();
     }
+
+    public function aggregateWallets(): array
+    {
+        return $this->walletService->aggregateWallets(['exchange' => GateioExchangeUtils::getDefaultExchangeName()]);
+    }
+
+    public function removeWallets()
+    {
+        $this->walletService->removeWallets(GateioExchangeUtils::getDefaultExchangeName());
+    }
 }

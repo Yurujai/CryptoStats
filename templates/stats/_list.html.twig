@@ -1,30 +1,26 @@
-<div class="col-6">
+<div class="col-sm-12 col-md-6">
     <div class="card border-left-primary shadow h-100">
         <div class="card-header">
             {{ "Wallet list"|trans }}
         </div>
         <div class="card-body">
-            <table id="table-data" class="table table-md table-responsive table-striped">
+            <table id="table-data" class="table table-md table-striped">
                 <thead>
                 <tr>
                     <td>{{ "Crypto"|trans }}</td>
-                    <td>{{ "Exchange"|trans }}</td>
                     <td>{{ "Amount"|trans }}</td>
                     <td>{{ "inOrder"|trans }}</td>
-                    <td>{{ "EUR"|trans }}</td>
                     <td>{{ "USD"|trans }}</td>
-                    <td>{{ "Percentage"|trans }}</td>
+                    <td>{{ "% Portfolio"|trans }}</td>
                 </tr>
                 </thead>
                 <tbody>
                 {% for key, item in wallets|filter(item => item.amount|number_format(8) > 0) %}
                     <tr>
                         <td>{{ item._id|upper}}</td>
-                        <td><small>{{ item.exchange|join(" ") }}</small></td>
                         <td>{{ item.amount|number_format(8) }}</td>
                         <td>{{ item.inOrder|number_format(8) }}</td>
-                        <td>{{ (item.totalEUR + item.inOrderEUR)|number_format(2) }}€</td>
-                        <td>{{ (item.totalUSD + item.inOrderUSD)|number_format(2) ~ '$' }}</td>
+                        <td>{{ (item.totalUSD + item.inOrderUSD)|number_format(2) }}</td>
                         <td>{{ item.percentage|number_format(2) }}%</td>
                     </tr>
                 {% endfor %}
@@ -33,21 +29,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    window.onload = function () {
-        var chart = new CanvasJS.Chart("chartContainer", {
-            animationEnabled: true,
-            backgroundColor: "transparent",
-            data: [{
-                type: "doughnut",
-                startAngle: 60,
-                indexLabelFontSize: 17,
-                indexLabel: "  {label}  ",
-                toolTipContent: "<b>{label}:</b> {y} (#percent%)",
-                dataPoints: {{ donutGlobal|json_encode|raw }}
-            }]
-        });
-        chart.render();
-    }
-</script>

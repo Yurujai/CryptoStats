@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\CoinbaseExchangeService;
-use App\Service\WalletService;
 use App\Utils\CoinbaseExchangeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,14 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CoinbaseController extends AbstractController
 {
-    private $walletService;
     private $coinbaseExchangeService;
 
-    public function __construct(
-        WalletService $walletService,
-        CoinbaseExchangeService $coinbaseExchangeService
-    ) {
-        $this->walletService = $walletService;
+    public function __construct(CoinbaseExchangeService $coinbaseExchangeService)
+    {
         $this->coinbaseExchangeService = $coinbaseExchangeService;
     }
 
@@ -31,7 +26,7 @@ class CoinbaseController extends AbstractController
     public function balance(): Response
     {
         return $this->render('exchange/template.html.twig', [
-            'balance' => $this->walletService->aggregateWallets(CoinbaseExchangeUtils::getDefaultExchangeName()),
+            'balance' => $this->coinbaseExchangeService->aggregateWallets(),
             'exchange' => CoinbaseExchangeUtils::getDefaultExchangeName(),
         ]);
     }

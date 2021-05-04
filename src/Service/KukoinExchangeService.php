@@ -92,4 +92,14 @@ class KukoinExchangeService implements ExchangeInterface
 
         return (float) $price[$market];
     }
+
+    public function aggregateWallets(): array
+    {
+        return $this->walletService->aggregateWallets(['exchange' => KukoinExchangeUtils::getDefaultExchangeName()]);
+    }
+
+    public function removeWallets()
+    {
+        $this->walletService->removeWallets(KukoinExchangeUtils::getDefaultExchangeName());
+    }
 }

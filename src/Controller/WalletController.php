@@ -11,6 +11,7 @@ use App\Service\GateIOExchangeService;
 use App\Service\KukoinExchangeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class WalletController extends AbstractController
@@ -36,6 +37,18 @@ class WalletController extends AbstractController
     }
 
     /**
+     * @Route("/last/update/wallets", name="crypto_stats_last_updated_wallets")
+     */
+    public function lastWalletUpdate(): Response
+    {
+        return $this->render('/resources/_block.html.twig', [
+            'headerText' => 'Last updated',
+            'value' => new \DateTime(),
+            'icon' => 'fas fa-calendar-alt'
+        ]);
+    }
+
+    /**
      * @Route("/update/wallets", name="crypto_stats_update_wallets", methods={"POST"})
      */
     public function update(): JsonResponse
@@ -47,5 +60,19 @@ class WalletController extends AbstractController
         $this->gateIOExchangeService->saveBalance();
 
         return new JsonResponse();
+    }
+
+    /**
+     * @Route("/remove/wallets", name="crypto_stats_remove_wallets")
+     */
+    public function remove(): Response
+    {
+        $this->binanceExchangeService->removeWallets();
+        $this->bitvavoExchangeService->removeWallets();
+        $this->coinbaseExchangeService->removeWallets();
+        $this->kukoinExchangeService->removeWallets();
+        $this->gateIOExchangeService->removeWallets();
+
+        return $this->redirectToRoute('crypto_stats');
     }
 }

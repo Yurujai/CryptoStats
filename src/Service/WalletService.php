@@ -45,6 +45,11 @@ class WalletService
         );
     }
 
+    public function countWallets(?string $exchangeName = null): int
+    {
+        return count($this->aggregateWallets(['exchange' => $exchangeName]));
+    }
+
     public function getAllWallets(string $exchangeName)
     {
         return $this->documentManager->getRepository(Wallet::class)->findBy(
@@ -71,15 +76,13 @@ class WalletService
         $this->documentManager->flush();
     }
 
-    public function aggregateWallets(?string $exchange = null): array
+    public function aggregateWallets(?array $criteria = []): array
     {
         $collection = $this->documentManager->getDocumentCollection(Wallet::class);
 
-        if ($exchange) {
+        if (!empty($criteria)) {
             $pipeline[] = [
-                '$match' => [
-                    'exchange' => $exchange,
-                ],
+                '$match' => $criteria
             ];
         }
 
@@ -104,6 +107,70 @@ class WalletService
 
         $pipeline[] = [
             '$sort' => ['_id' => 1],
+        ];
+
+        return iterator_to_array($collection->aggregate($pipeline, ['cursor' => []]));
+    }
+
+    public function removeWallets(?string $exchangeName = null): void
+    {
+        $queryBuilder = $this->documentManager->createQueryBuilder(Wallet::class)->remove();
+        if ($exchangeName) {
+            $queryBuilder->field('exchange')->equals($exchangeName);
+        }
+
+        $queryBuilder->getQuery()->execute();
+    }
+
+    public function getTotalAmount(?string $exchange = null): array
+    {
+        $collection = $this->documentManager->getDocumentCollection(Wallet::class);
+
+        if ($exchange) {
+            $pipeline[] = [
+                '$match' => [
+                    'exchange' => $exchange,
+                ],
+            ];
+        }
+
+        $pipeline[] = [
+            '$match' => [
+                'amount' => ['$gt' => 0],
+            ],
+        ];
+
+        $pipeline[] = [
+            '$project' => [
+                'total' => ['$sum' => ['$multiply' => ['$usdPrice', '$amount']]],
+                'inOrderUSD' => ['$sum' => ['$multiply' => ['$usdPrice', '$inOrder']]],
+            ]
+        ];
+
+        return iterator_to_array($collection->aggregate($pipeline, ['cursor' => []]));
+    }
+
+    public function getNumberOfCrypto(array $criteria): array
+    {
+        $collection = $this->documentManager->getDocumentCollection(Wallet::class);
+
+        if ($criteria) {
+            $pipeline[] = [
+                '$match' => $criteria
+            ];
+        }
+
+        $pipeline[] = [
+            '$match' => [
+                'amount' => ['$gt' => 0],
+            ],
+        ];
+
+        $pipeline[] = [
+            '$group' => [
+                '_id' => '$symbol',
+                'total' => ['$sum' => 1],
+            ]
         ];
 
         return iterator_to_array($collection->aggregate($pipeline, ['cursor' => []]));
