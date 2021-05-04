@@ -83,4 +83,14 @@ class BitvavoExchangeService implements ExchangeInterface
 
         return (float) $price['price'];
     }
+
+    public function aggregateWallets(): array
+    {
+        return $this->walletService->aggregateWallets(['exchange' => BitvavoExchangeUtils::getDefaultExchangeName()]);
+    }
+
+    public function removeWallets()
+    {
+        $this->walletService->removeWallets(BitvavoExchangeUtils::getDefaultExchangeName());
+    }
 }

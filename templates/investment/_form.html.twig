@@ -1,0 +1,27 @@
+<div class="card border-left-success shadow h-80">
+    <div class="card-header">
+        {{ "Add investment"|trans }}
+    </div>
+    <div class="card-body">
+        <div class="no-gutters align-items-center">
+            {{ form_start(investmentForm)}}
+            <div class="investment-form-input">
+                {{ form_widget(investmentForm.amount) }}
+            </div>
+            <div class="investment-form-input">
+                {{ form_widget(investmentForm.currency) }}
+            </div>
+            <div class="investment-form-input">
+                {{ form_widget(investmentForm.exchange) }}
+            </div>
+            <div class="investment-form-input">
+                {{ form_widget(investmentForm.added) }}
+            </div>
+            <div class="investment-form-input">
+                <button type="submit" class="btn btn-block btn-primary">{{ "Add"|trans }}</button>
+            </div>
+            {{ form_end(investmentForm) }}
+        </div>
+    </div>
+</div>
+

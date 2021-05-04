@@ -7,8 +7,22 @@
 {% endblock %}
 
 {% block body %}
-    {{ render(controller('App\\Controller\\StatsController::statsGlobal')) }}
+
     <div class="row">
+        {{ render(controller('App\\Controller\\StatsController::statsGlobal')) }}
+    </div>
+
+    <div class="row">
+        {{ render(controller('App\\Controller\\StatsController::totalCrypto')) }}
+        {{ render(controller('App\\Controller\\StatsController::numberOfCryptoCoinBlock')) }}
+        {{ render(controller('App\\Controller\\StatsController::numberOfStableCoinBlock')) }}
+        {{ render(controller('App\\Controller\\StatsController::numberOfFiatCoinBlock')) }}
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12" style="margin: 10px 0 10px 0">
+            <h3>{{ "Exchanges"|trans }}</h3>
+        </div>
         {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'binance'})) }}
         {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'bitvavo'})) }}
         {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'kukoin'})) }}
@@ -16,6 +30,11 @@
         {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'gateio'})) }}
     </div>
 
+    <div class="row">
+        <div class="col-sm-12" style="margin: 10px 0 10px 0">
+            <h3>{{ "Data"|trans }}</h3>
+        </div>
+        {{ render(controller('App\\Controller\\StatsController::statsByMarket')) }}
+    </div>
 
-    {{ render(controller('App\\Controller\\StatsController::statsByMarket')) }}
 {% endblock %}

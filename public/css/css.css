@@ -156,6 +156,11 @@ a:focus {
         transform: rotate(360deg);
     }
 }
+
+.wrapper {
+    margin-top:35px;
+}
+
 .wrapper-uploading {
     position: absolute;
     background-color: #ccc;
@@ -181,4 +186,21 @@ a:focus {
     right: 1.4rem;
     font-size: 12px;
     color: #ccc;
+}
+
+.wrapper {
+    margin-top:35px;
+}
+
+/** Investment **/
+.investment-form-input {
+    margin-top:1rem;
+}
+
+.investment-list {
+    min-height: 23rem;
+}
+
+#chartContainer {
+    height: 700px !important;
 }

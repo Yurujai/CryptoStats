@@ -1,9 +1,5 @@
-<div class="row">
-    {% include "/stats/global/_block.html.twig" with {'headerText': 'Crypto'|trans, 'icon': 'fab fa-bitcoin', 'value': numberOfCrypto } %}
-    {% set investmentCurrency = '$' %}
-    {% set investmentIcon = 'fas fa-dolar-sign' %}
-    {% if investment is defined and investment.getCurrency() == 'eur' %}{% set investmentCurrency = '€' %}{% set investmentIcon = 'fas fa-euro-sign' %}{% endif %}
-    {% include "/stats/global/_block.html.twig" with {'headerText': 'Investment'|trans, 'icon': investmentIcon, 'value': investment.getAmount()|default(0) ~ investmentCurrency } %}
-    {% include "/stats/global/_block.html.twig" with {'headerText': 'Profit amount'|trans, 'icon': 'fas fa-coins', 'value': globalUSD|number_format(2) ~ '$', 'value2': globalEUR|number_format(2) ~ '€' }  %}
-    {% include "/stats/global/_block.html.twig" with {'headerText': 'Profit'|trans, 'icon': 'fas fa-percent', 'value': profit|number_format(2) } %}
-</div>
+{{ render(controller('App\\Controller\\WalletController::lastWalletUpdate')) }}
+{{ render(controller('App\\Controller\\InvestmentController::block')) }}
+{{ render(controller('App\\Controller\\StatsController::totalBlock')) }}
+{{ render(controller('App\\Controller\\StatsController::profitBlock')) }}
+

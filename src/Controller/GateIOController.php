@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\GateIOExchangeService;
-use App\Service\WalletService;
-use App\Utils\BinanceExchangeUtils;
 use App\Utils\GateioExchangeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,14 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GateIOController extends AbstractController
 {
-    private $walletService;
     private $gateIOExchangeService;
 
-    public function __construct(
-        WalletService $walletService,
-        GateIOExchangeService $gateIOExchangeService
-    ) {
-        $this->walletService = $walletService;
+    public function __construct(GateIOExchangeService $gateIOExchangeService)
+    {
         $this->gateIOExchangeService = $gateIOExchangeService;
     }
 
@@ -32,7 +26,7 @@ class GateIOController extends AbstractController
     public function balance(): Response
     {
         return $this->render('binance/template.html.twig', [
-            'balance' => $this->walletService->aggregateWallets(BinanceExchangeUtils::getDefaultExchangeName()),
+            'balance' => $this->gateIOExchangeService->aggregateWallets(),
             'exchange' => GateioExchangeUtils::getDefaultExchangeName(),
         ]);
     }

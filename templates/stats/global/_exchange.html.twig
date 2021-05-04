@@ -1,16 +1,16 @@
 {% if is_exchange_enabled(exchange) %}
-    <div class="col-xl-3 col-md-6 col-sm-6 mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-success shadow h-80">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <a href="{{ path('crypto_stats_exchange_'~exchange) }}" target="_blank">
+{#                        <a href="{{ path('crypto_stats_exchange_'~exchange) }}" target="_blank">#}
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 {{ exchange }}
                             </div>
-                        </a>
+{#                        </a>#}
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            {{ globalUSD|number_format(2) }}$ / {{ globalEUR|number_format(2) }}€
+                            {{ total|number_format(2) }} <small><strong>$</strong></small>
                         </div>
                     </div>
                     <div class="col-auto">

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\BitvavoExchangeService;
-use App\Service\WalletService;
 use App\Utils\BitvavoExchangeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,14 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BitvavoController extends AbstractController
 {
-    private $walletService;
     private $bitvavoExchangeService;
 
-    public function __construct(
-        WalletService $walletService,
-        BitvavoExchangeService $bitvavoExchangeService
-    ) {
-        $this->walletService = $walletService;
+    public function __construct(BitvavoExchangeService $bitvavoExchangeService)
+    {
         $this->bitvavoExchangeService = $bitvavoExchangeService;
     }
 
@@ -31,7 +26,7 @@ class BitvavoController extends AbstractController
     public function balance(): Response
     {
         return $this->render('exchange/template.html.twig', [
-            'balance' => $this->walletService->aggregateWallets(BitvavoExchangeUtils::getDefaultExchangeName()),
+            'balance' => $this->bitvavoExchangeService->aggregateWallets(),
             'exchange' => BitvavoExchangeUtils::getDefaultExchangeName(),
         ]);
     }

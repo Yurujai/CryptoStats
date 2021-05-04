@@ -4,53 +4,26 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Service\InvestmentService;
-use App\Service\WalletService;
+use App\Service\StatsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class StatsController extends AbstractController
 {
-    private $walletService;
-    private $investmentService;
+    private $statsService;
 
-    public function __construct(
-        WalletService $walletService,
-        InvestmentService $investmentService
-    ) {
-        $this->walletService = $walletService;
-        $this->investmentService = $investmentService;
+    public function __construct(StatsService $statsService)
+    {
+        $this->statsService = $statsService;
     }
 
     /**
-     * @Route("/statsglobal", name="crypto_stats_generic_stats")
+     * @Route("/stats/global", name="crypto_stats_generic_stats")
      */
     public function statsGlobal(): Response
     {
-        $investment = $this->investmentService->getInvestment();
-        $wallets = $this->walletService->aggregateWallets();
-        $globalEUR = 0;
-        $globalUSD = 0;
-        foreach ($wallets as $key => $wallet) {
-            $globalEUR += $wallets[$key]['totalEUR'] + $wallets[$key]['inOrderEUR'];
-            $globalUSD += $wallets[$key]['totalUSD'] + $wallets[$key]['inOrderUSD'];
-        }
-
-        $profit = 0;
-        if ($investment && 'eur' === $investment->getCurrency()) {
-            $profit = ($globalEUR - $investment->getAmount()) / $investment->getAmount() * 100;
-        } elseif ($investment && 'usd' === $investment->getCurrency()) {
-            $profit = ($globalUSD - $investment->getAmount()) / $investment->getAmount() * 100;
-        }
-
-        return $this->render('/stats/global/template.html.twig', [
-            'globalEUR' => $globalEUR,
-            'globalUSD' => $globalUSD,
-            'numberOfCrypto' => count($wallets),
-            'profit' => $profit,
-            'investment' => $investment,
-        ]);
+        return $this->render('/stats/global/template.html.twig');
     }
 
     /**
@@ -58,28 +31,37 @@ class StatsController extends AbstractController
      */
     public function statsByMarket(): Response
     {
-        $wallets = $this->walletService->aggregateWallets();
-        $global = 0;
-        foreach ($wallets as $key => $wallet) {
-            $global += $wallets[$key]['totalUSD'];
-        }
+        return $this->render('/stats/template.html.twig');
+    }
 
-        $donutGlobal = [];
-        foreach ($wallets as $key => $wallet) {
-            if ($global <= 0) {
-                $wallets[$key]['percentage'] = 0;
-                continue;
-            }
-            $wallets[$key]['percentage'] = ($wallets[$key]['totalUSD'] * 100) / $global;
-            $donutGlobal[] = [
-                'y' => $wallets[$key]['percentage'],
-                'label' => $wallets[$key]['_id'],
-            ];
-        }
+    public function listOfCryptoBlock(): Response
+    {
+        $wallets = $this->statsService->getListOfCrypto();
 
-        return $this->render('/stats/template.html.twig', [
+        return $this->render('/stats/_list.html.twig', [
             'wallets' => $wallets,
+        ]);
+    }
+
+    public function donutChart(): Response
+    {
+        $wallets = $this->statsService->getListOfCrypto();
+        $donutGlobal = [];
+        $labels = [];
+        $values = [];
+        foreach ($wallets as $wallet) {
+            $donutGlobal[] = [
+                'y'     => $wallet['percentage'],
+                'label' => $wallet['_id'],
+            ];
+            $labels[] = $wallet['_id'];
+            $values[] = $wallet['percentage'];
+        }
+
+        return $this->render('/stats/_donut.html.twig', [
             'donutGlobal' => $donutGlobal,
+            'labels' => $labels,
+            'values' => $values,
         ]);
     }
 
@@ -88,18 +70,96 @@ class StatsController extends AbstractController
      */
     public function statsByExchange(string $exchange): Response
     {
-        $wallets = $this->walletService->aggregateWallets($exchange);
-        $globalUSD = 0;
-        $globalEUR = 0;
-        foreach ($wallets as $wallet) {
-            $globalUSD += $wallet['totalUSD'];
-            $globalEUR += $wallet['totalEUR'];
-        }
+        $totalAmount = $this->statsService->getTotalAmount($exchange);
 
         return $this->render('/stats/global/_exchange.html.twig', [
-            'globalUSD' => $globalUSD,
-            'globalEUR' => $globalEUR,
+            'total' => $totalAmount,
             'exchange' => $exchange,
         ]);
     }
+
+    /**
+     * @Route("/profit/percentage", name="crypto_stats_profit_percentage")
+     */
+    public function profitBlock(): Response
+    {
+        $profit = $this->statsService->calculateProfit();
+
+        return $this->render('/resources/_block.html.twig', [
+            'headerText' => 'Profit',
+            'value' => number_format($profit, 2),
+            'icon' => 'fas fa-percent'
+        ]);
+    }
+
+    /**
+     * @Route("/total/amount", name="crypto_stats_total_amount")
+     */
+    public function totalBlock(): Response
+    {
+        $amount = $this->statsService->getTotalAmount();
+
+        return $this->render('/resources/_block.html.twig', [
+            'headerText' => 'Total amount',
+            'value' => number_format($amount, 2),
+            'icon' => 'fas fa-coins'
+        ]);
+    }
+
+    /**
+     * @Route("/crypto/total", name="crypto_stats_crypto_total")
+     */
+    public function totalCrypto(): Response
+    {
+        $numberOfCrypto = $this->statsService->countCrypto();
+
+        return $this->render('/resources/_block.html.twig', [
+            'headerText' => 'Total Coins',
+            'value' => $numberOfCrypto,
+            'icon' => 'fab fa-bitcoin'
+        ]);
+    }
+
+    /**
+     * @Route("/crypto/number", name="crypto_stats_crypto_coin_number")
+     */
+    public function numberOfCryptoCoinBlock(): Response
+    {
+        $numberOfCrypto = $this->statsService->getNumberOfCrypto();
+
+        return $this->render('/resources/_block.html.twig', [
+            'headerText' => 'Crypto',
+            'value' => $numberOfCrypto,
+            'icon' => 'fab fa-bitcoin'
+        ]);
+    }
+
+    /**
+     * @Route("/crypto/stable", name="crypto_stats_crypto_stable_number")
+     */
+    public function numberOfStableCoinBlock(): Response
+    {
+        $numberOfCrypto = $this->statsService->getNumberOfStable();
+
+        return $this->render('/resources/_block.html.twig', [
+            'headerText' => 'Stable coins',
+            'value' => $numberOfCrypto,
+            'icon' => 'fab fa-bitcoin'
+        ]);
+    }
+
+    /**
+     * @Route("/crypto/fiat", name="crypto_stats_crypto_fiat_number")
+     */
+    public function numberOfFiatCoinBlock(): Response
+    {
+        $numberOfCrypto = $this->statsService->getNumberOfFiat();
+
+        return $this->render('/resources/_block.html.twig', [
+            'headerText' => 'Fiat',
+            'value' => $numberOfCrypto,
+            'icon' => 'fab fa-bitcoin'
+        ]);
+    }
+
 }

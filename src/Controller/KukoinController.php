@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\KukoinExchangeService;
-use App\Service\WalletService;
 use App\Utils\KukoinExchangeUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,14 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class KukoinController extends AbstractController
 {
-    private $walletService;
     private $kukoinExchangeService;
 
-    public function __construct(
-        WalletService $walletService,
-        KukoinExchangeService $kukoinExchangeService
-    ) {
-        $this->walletService = $walletService;
+    public function __construct(KukoinExchangeService $kukoinExchangeService)
+    {
         $this->kukoinExchangeService = $kukoinExchangeService;
     }
 
@@ -31,7 +26,7 @@ class KukoinController extends AbstractController
     public function balance(): Response
     {
         return $this->render('kukoin/template.html.twig', [
-            'balance' => $this->walletService->aggregateWallets(KukoinExchangeUtils::getDefaultExchangeName()),
+            'balance' => $this->kukoinExchangeService->aggregateWallets(),
             'exchange' => KukoinExchangeUtils::getDefaultExchangeName(),
         ]);
     }

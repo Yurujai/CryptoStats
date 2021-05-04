@@ -83,12 +83,28 @@ class BinanceExchangeService implements ExchangeInterface
             try {
                 $price = $api->price($market.'USDT');
             } catch (\Exception $exception) {
-                $price = $api->price($market.'BUSD');
+                try {
+                    $price = $api->price($market.'BUSD');
+                } catch (\Exception $exception) {
+                    $bnbAmount = $api->price($market.'BNB');
+                    $price = $api->price('BNBUSDT');
+                    $price = $bnbAmount * $price;
+                }
             }
         } catch (\Exception $exception) {
             throw new \Exception('Market not found');
         }
 
         return (float) $price;
+    }
+
+    public function aggregateWallets(): array
+    {
+        return $this->walletService->aggregateWallets(['exchange' => BinanceExchangeUtils::getDefaultExchangeName()]);
+    }
+
+    public function removeWallets()
+    {
+        $this->walletService->removeWallets(BinanceExchangeUtils::getDefaultExchangeName());
     }
 }
