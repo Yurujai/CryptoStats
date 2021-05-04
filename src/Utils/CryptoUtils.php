@@ -16,7 +16,7 @@ class CryptoUtils
 
     private const FIAT_COINS = [
         'eur',
-        'usd'
+        'usd',
     ];
 
     public static function getListOfStableCoin(): array
@@ -38,5 +38,4 @@ class CryptoUtils
     {
         return in_array($crypto, self::getListOfStableCoin());
     }
-
 }

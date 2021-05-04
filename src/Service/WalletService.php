@@ -82,7 +82,7 @@ class WalletService
 
         if (!empty($criteria)) {
             $pipeline[] = [
-                '$match' => $criteria
+                '$match' => $criteria,
             ];
         }
 
@@ -144,7 +144,7 @@ class WalletService
             '$project' => [
                 'total' => ['$sum' => ['$multiply' => ['$usdPrice', '$amount']]],
                 'inOrderUSD' => ['$sum' => ['$multiply' => ['$usdPrice', '$inOrder']]],
-            ]
+            ],
         ];
 
         return iterator_to_array($collection->aggregate($pipeline, ['cursor' => []]));
@@ -156,7 +156,7 @@ class WalletService
 
         if ($criteria) {
             $pipeline[] = [
-                '$match' => $criteria
+                '$match' => $criteria,
             ];
         }
 
@@ -170,7 +170,7 @@ class WalletService
             '$group' => [
                 '_id' => '$symbol',
                 'total' => ['$sum' => 1],
-            ]
+            ],
         ];
 
         return iterator_to_array($collection->aggregate($pipeline, ['cursor' => []]));

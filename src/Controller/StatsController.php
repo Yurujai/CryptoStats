@@ -51,7 +51,7 @@ class StatsController extends AbstractController
         $values = [];
         foreach ($wallets as $wallet) {
             $donutGlobal[] = [
-                'y'     => $wallet['percentage'],
+                'y' => $wallet['percentage'],
                 'label' => $wallet['_id'],
             ];
             $labels[] = $wallet['_id'];
@@ -88,7 +88,7 @@ class StatsController extends AbstractController
         return $this->render('/resources/_block.html.twig', [
             'headerText' => 'Profit',
             'value' => number_format($profit, 2),
-            'icon' => 'fas fa-percent'
+            'icon' => 'fas fa-percent',
         ]);
     }
 
@@ -102,7 +102,7 @@ class StatsController extends AbstractController
         return $this->render('/resources/_block.html.twig', [
             'headerText' => 'Total amount',
             'value' => number_format($amount, 2),
-            'icon' => 'fas fa-coins'
+            'icon' => 'fas fa-coins',
         ]);
     }
 
@@ -116,7 +116,7 @@ class StatsController extends AbstractController
         return $this->render('/resources/_block.html.twig', [
             'headerText' => 'Total Coins',
             'value' => $numberOfCrypto,
-            'icon' => 'fab fa-bitcoin'
+            'icon' => 'fab fa-bitcoin',
         ]);
     }
 
@@ -130,7 +130,7 @@ class StatsController extends AbstractController
         return $this->render('/resources/_block.html.twig', [
             'headerText' => 'Crypto',
             'value' => $numberOfCrypto,
-            'icon' => 'fab fa-bitcoin'
+            'icon' => 'fab fa-bitcoin',
         ]);
     }
 
@@ -144,7 +144,7 @@ class StatsController extends AbstractController
         return $this->render('/resources/_block.html.twig', [
             'headerText' => 'Stable coins',
             'value' => $numberOfCrypto,
-            'icon' => 'fab fa-bitcoin'
+            'icon' => 'fab fa-bitcoin',
         ]);
     }
 
@@ -158,8 +158,7 @@ class StatsController extends AbstractController
         return $this->render('/resources/_block.html.twig', [
             'headerText' => 'Fiat',
             'value' => $numberOfCrypto,
-            'icon' => 'fab fa-bitcoin'
+            'icon' => 'fab fa-bitcoin',
         ]);
     }
-
 }

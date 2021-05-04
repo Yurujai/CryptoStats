@@ -6,7 +6,6 @@ namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,7 +22,7 @@ class InvestmentType extends AbstractType
                     'label' => 'amount',
                     'attr' => [
                         'class' => 'form-control',
-                        'placeholder' => 'amount'
+                        'placeholder' => 'amount',
                     ],
                     'required' => true,
                 ]

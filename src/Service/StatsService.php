@@ -21,7 +21,7 @@ class StatsService
     {
         $amount = 0;
         $wallets = $this->walletService->getTotalAmount($exchange);
-        foreach($wallets as $wallet) {
+        foreach ($wallets as $wallet) {
             $amount += $wallet['total'] + $wallet['inOrderUSD'];
         }
 
@@ -46,7 +46,7 @@ class StatsService
     {
         $amount = 0;
         $wallets = $this->walletService->aggregateWallets();
-        foreach($wallets as $wallet) {
+        foreach ($wallets as $wallet) {
             $amount += $wallet['totalUSD'] + $wallet['inOrderUSD'];
         }
 
@@ -84,8 +84,8 @@ class StatsService
         $criteria = [];
         $global = $this->getTotalAmount();
         $wallets = $this->walletService->aggregateWallets($criteria);
-        foreach($wallets as $key =>  $wallet) {
-            $wallets[$key]['percentage'] = (($wallet['totalUSD'] + $wallet['inOrderUSD'])* 100) / $global;
+        foreach ($wallets as $key => $wallet) {
+            $wallets[$key]['percentage'] = (($wallet['totalUSD'] + $wallet['inOrderUSD']) * 100) / $global;
         }
 
         return $wallets;

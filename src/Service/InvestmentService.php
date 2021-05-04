@@ -49,11 +49,11 @@ class InvestmentService
 
     public function getTotalEURAmount(): float
     {
-        $investments =  $this->documentManager->getRepository(Investment::class)->findAll();
+        $investments = $this->documentManager->getRepository(Investment::class)->findAll();
 
         $total = 0;
-        foreach($investments as $investment) {
-            if($investment->getCurrency() === 'usd') {
+        foreach ($investments as $investment) {
+            if ('usd' === $investment->getCurrency()) {
                 $total += PriceConversionUtils::getEURFromUSD($investment->getAmount());
             } else {
                 $total += $investment->getAmount();
@@ -65,11 +65,11 @@ class InvestmentService
 
     public function getTotalUSDAmount(): float
     {
-        $investments =  $this->documentManager->getRepository(Investment::class)->findAll();
+        $investments = $this->documentManager->getRepository(Investment::class)->findAll();
 
         $total = 0;
-        foreach($investments as $investment) {
-            if($investment->getCurrency() === 'eur') {
+        foreach ($investments as $investment) {
+            if ('eur' === $investment->getCurrency()) {
                 $total += PriceConversionUtils::getUSDFromEUR($investment->getAmount());
             } else {
                 $total += $investment->getAmount();

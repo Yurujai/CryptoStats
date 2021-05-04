@@ -44,7 +44,7 @@ class WalletController extends AbstractController
         return $this->render('/resources/_block.html.twig', [
             'headerText' => 'Last updated',
             'value' => new \DateTime(),
-            'icon' => 'fas fa-calendar-alt'
+            'icon' => 'fas fa-calendar-alt',
         ]);
     }
 

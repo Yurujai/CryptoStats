@@ -19,6 +19,6 @@ class PriceExtension extends AbstractExtension
     public function getConversionPrice(): string
     {
         // TODO: Get conversion price dynamically from any API
-        return "1€ / 1.17$";
+        return '1€ / 1.17$';
     }
 }

@@ -63,7 +63,7 @@ class InvestmentController extends AbstractController
         return $this->render('/resources/_block.html.twig', [
             'headerText' => 'Investment',
             'value' => $investment,
-            'icon' => 'fas fa-dollar-sign'
+            'icon' => 'fas fa-dollar-sign',
         ]);
     }
 }
