@@ -22,6 +22,7 @@ class BitvavoExchangeService implements ExchangeInterface
         return new Bitvavo([
             'APIKEY' => BitvavoExchangeUtils::getApiKey(),
             'APISECRET' => BitvavoExchangeUtils::getApiSecret(),
+            'ACCESSWINDOW' => 60000,
         ]);
     }
 
