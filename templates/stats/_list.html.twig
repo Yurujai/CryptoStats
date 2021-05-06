@@ -4,7 +4,7 @@
             {{ "Wallet list"|trans }}
         </div>
         <div class="card-body">
-            <table id="table-data" class="table table-md table-striped">
+            <table id="table-data" data-order='[[ 4, "desc" ]]' class="table table-md table-striped">
                 <thead>
                 <tr>
                     <td>{{ "Crypto"|trans }}</td>
@@ -15,7 +15,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for key, item in wallets|filter(item => item.amount|number_format(8) > 0) %}
+                {% for key, item in wallets|filter(item => item.amount|number_format(8) > 0 or item.inOrder|number_format(8) > 0) %}
                     <tr>
                         <td>{{ item._id|upper}}</td>
                         <td>{{ item.amount|number_format(8) }}</td>

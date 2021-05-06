@@ -11,12 +11,9 @@ If you want to add an improvement or contribute to the software, do not hesitate
 * Add prices to coin rows
 * Add coingecko links to the coins (Maybe a landpage per coin?)
 * Add links to relevant coin news (Possible agregator: https://cryptopanic.com/)
-* Allow add investment amount easy and by exchange
-* Show investment amount
 * Mark wallet as stable coins
   * Separate chart of stablecoins and cryptocurrencies
 * Get value of USD and EUR from any exchange and not set it hardcoded
-* Allow remove wallets
 * Add profit of last 24 hours
 
 (infrastructure) Next steps:

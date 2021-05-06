@@ -88,7 +88,10 @@ class WalletService
 
         $pipeline[] = [
             '$match' => [
-                'amount' => ['$gt' => 0],
+                '$or' => [
+                    ['amount' => ['$gt' => 0]],
+                    ['inOrder' => ['$gt' => 0]]
+                ]
             ],
         ];
 
@@ -136,7 +139,10 @@ class WalletService
 
         $pipeline[] = [
             '$match' => [
-                'amount' => ['$gt' => 0],
+                '$or' => [
+                    ['amount' => ['$gt' => 0]],
+                    ['inOrder' => ['$gt' => 0]]
+                ]
             ],
         ];
 
