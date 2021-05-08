@@ -9,6 +9,15 @@
 {% block body %}
 
     <div class="row">
+        <div class="col text-right">
+            <a class="btn btn-primary" style="color:white" data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-plus"></i> {{ "Add transaction"|trans }}
+            </a>
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
         {{ render(controller('App\\Controller\\StatsController::statsGlobal')) }}
     </div>
 
@@ -37,4 +46,74 @@
         {{ render(controller('App\\Controller\\StatsController::statsByMarket')) }}
     </div>
 
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: none;">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <strong>{{ "Add transaction"|trans }}</strong>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-pills nav-fill">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="investment-tab" data-toggle="tab" href="#investment">{{ "Investment"|trans }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " id="Withdraw-tab" data-toggle="tab" href="#Withdraw">{{ "Withdraw"|trans }}</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="add_transaction_content">
+                        <div class="tab-pane fade show active" id="investment" role="tabpanel" aria-labelledby="investment-tab">
+                            {{ form_start(investmentForm)}}
+                            <div class="investment-form-input">
+                                {{ form_widget(investmentForm.amount) }}
+                            </div>
+                            <div class="investment-form-input">
+                                {{ form_widget(investmentForm.currency) }}
+                            </div>
+                            <div class="investment-form-input">
+                                {{ form_widget(investmentForm.exchange) }}
+                            </div>
+                            <div class="investment-form-input">
+                                {{ form_widget(investmentForm.added) }}
+                            </div>
+                            <div class="investment-form-input">
+                                <button type="submit" class="btn btn-block btn-primary">{{ "Add"|trans }}</button>
+                            </div>
+                            {{ form_end(investmentForm) }}
+                        </div>
+                        <div class="tab-pane fade" id="Withdraw" role="tabpanel" aria-labelledby="Withdraw-tab">
+                            {{ form_start(withdrawForm)}}
+                            <div class="withdraw-form-input">
+                                {{ form_widget(withdrawForm.amount) }}
+                            </div>
+                            <div class="withdraw-form-input">
+                                {{ form_widget(withdrawForm.symbol) }}
+                            </div>
+                            <div class="withdraw-form-input">
+                                {{ form_widget(withdrawForm.moved_to) }}
+                            </div>
+                            <div class="withdraw-form-input">
+                                {{ form_widget(withdrawForm.comment) }}
+                            </div>
+                            <div class="withdraw-form-input">
+                                {{ form_widget(withdrawForm.date) }}
+                            </div>
+                            <div class="withdraw-form-input">
+                                <button type="submit" class="btn btn-block btn-primary">{{ "Add"|trans }}</button>
+                            </div>
+                            {{ form_end(withdrawForm) }}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none;">
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

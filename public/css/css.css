@@ -204,3 +204,7 @@ a:focus {
 #chartContainer {
     height: 700px !important;
 }
+
+.withdraw-form-input {
+    margin-top:1rem;
+}
