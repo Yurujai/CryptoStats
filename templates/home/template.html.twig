@@ -28,23 +28,24 @@
         {{ render(controller('App\\Controller\\StatsController::numberOfFiatCoinBlock')) }}
     </div>
 
-    <div class="row">
-        <div class="col-sm-12" style="margin: 10px 0 10px 0">
-            <h3>{{ "Exchanges"|trans }}</h3>
-        </div>
-        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'binance'})) }}
-        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'bitvavo'})) }}
-        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'kukoin'})) }}
-        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'coinbase'})) }}
-        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'gateio'})) }}
-    </div>
+{#    <div class="row">#}
+{#        <div class="col-sm-12" style="margin: 10px 0 10px 0">#}
+{#            <h3>{{ "Exchanges"|trans }}</h3>#}
+{#        </div>#}
+{#        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'binance'})) }}#}
+{#        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'bitvavo'})) }}#}
+{#        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'kukoin'})) }}#}
+{#        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'coinbase'})) }}#}
+{#        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'gateio'})) }}#}
+{#    </div>#}
 
-    <div class="row">
-        <div class="col-sm-12" style="margin: 10px 0 10px 0">
-            <h3>{{ "Data"|trans }}</h3>
-        </div>
-        {{ render(controller('App\\Controller\\StatsController::statsByMarket')) }}
-    </div>
+
+{#    <div class="row">#}
+{#        <div class="col-sm-12" style="margin: 10px 0 10px 0">#}
+{#            <h3>{{ "Data"|trans }}</h3>#}
+{#        </div>#}
+{#        {{ render(controller('App\\Controller\\StatsController::statsByMarket')) }}#}
+{#    </div>#}
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -60,31 +61,31 @@
                 <div class="modal-body">
                     <ul class="nav nav-pills nav-fill">
                         <li class="nav-item">
-                            <a class="nav-link active" id="investment-tab" data-toggle="tab" href="#investment">{{ "Investment"|trans }}</a>
+                            <a class="nav-link active" id="deposit-tab" data-toggle="tab" href="#deposit">{{ "Deposit"|trans }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " id="Withdraw-tab" data-toggle="tab" href="#Withdraw">{{ "Withdraw"|trans }}</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="add_transaction_content">
-                        <div class="tab-pane fade show active" id="investment" role="tabpanel" aria-labelledby="investment-tab">
-                            {{ form_start(investmentForm)}}
-                            <div class="investment-form-input">
-                                {{ form_widget(investmentForm.amount) }}
+                        <div class="tab-pane fade show active" id="deposit" role="tabpanel" aria-labelledby="deposit-tab">
+                            {{ form_start(depositForm)}}
+                            <div class="deposit-form-input">
+                                {{ form_widget(depositForm.amount) }}
                             </div>
-                            <div class="investment-form-input">
-                                {{ form_widget(investmentForm.currency) }}
+                            <div class="deposit-form-input">
+                                {{ form_widget(depositForm.symbol) }}
                             </div>
-                            <div class="investment-form-input">
-                                {{ form_widget(investmentForm.exchange) }}
+                            <div class="deposit-form-input">
+                                {{ form_widget(depositForm.exchange) }}
                             </div>
-                            <div class="investment-form-input">
-                                {{ form_widget(investmentForm.added) }}
+                            <div class="deposit-form-input">
+                                {{ form_widget(depositForm.added) }}
                             </div>
-                            <div class="investment-form-input">
+                            <div class="deposit-form-input">
                                 <button type="submit" class="btn btn-block btn-primary">{{ "Add"|trans }}</button>
                             </div>
-                            {{ form_end(investmentForm) }}
+                            {{ form_end(depositForm) }}
                         </div>
                         <div class="tab-pane fade" id="Withdraw" role="tabpanel" aria-labelledby="Withdraw-tab">
                             {{ form_start(withdrawForm)}}
@@ -96,9 +97,6 @@
                             </div>
                             <div class="withdraw-form-input">
                                 {{ form_widget(withdrawForm.moved_to) }}
-                            </div>
-                            <div class="withdraw-form-input">
-                                {{ form_widget(withdrawForm.comment) }}
                             </div>
                             <div class="withdraw-form-input">
                                 {{ form_widget(withdrawForm.date) }}

@@ -16,32 +16,45 @@ class WalletService
         $this->documentManager = $documentManager;
     }
 
-    public function create(string $exchangeName, string $symbol, string $available, string $inOrder, float $eurPrice, float $usdPrice): Wallet
-    {
+    public function create(
+        string $exchangeName,
+        string $symbol,
+        string $available,
+        string $inOrder,
+        \DateTimeInterface $updated,
+        float $price
+    ): Wallet {
         $wallet = $this->walletExists($exchangeName, $symbol);
 
         if (!$wallet instanceof Wallet) {
-            $wallet = $this->new($exchangeName, $symbol, $available, $inOrder, $eurPrice, $usdPrice);
+            $wallet = $this->new($exchangeName, $symbol, $available, $inOrder, $updated, $price);
             $this->saveOnMemory($wallet);
         } else {
-            $wallet->setAmount((float) $available);
-            $wallet->setInOrder((float) $inOrder);
-            $wallet->setEURPRice($eurPrice);
-            $wallet->setUSDPrice($usdPrice);
+            $wallet->setAmount((float)$available);
+            $wallet->setInOrder((float)$inOrder);
+            $wallet->setTypeFromSymbol($symbol);
+            $wallet->setUpdated($updated);
+            $wallet->setPrice($price);
         }
 
         return $wallet;
     }
 
-    public function new(string $exchangeName, string $symbol, string $available, string $inOrder, float $eurPrice, float $usdPrice): Wallet
-    {
+    public function new(
+        string $exchangeName,
+        string $symbol,
+        string $available,
+        string $inOrder,
+        \DateTimeInterface $updated,
+        float $price
+    ): Wallet {
         return new Wallet(
             $exchangeName,
             $symbol,
-            (float) $available,
-            (float) $inOrder,
-            $eurPrice,
-            $usdPrice
+            (float)$available,
+            (float)$inOrder,
+            $updated,
+            $price
         );
     }
 
@@ -50,7 +63,7 @@ class WalletService
         return count($this->aggregateWallets(['exchange' => $exchangeName]));
     }
 
-    public function getAllWallets(string $exchangeName)
+    public function getAllWallets(string $exchangeName): array
     {
         return $this->documentManager->getRepository(Wallet::class)->findBy(
             ['exchange' => $exchangeName],
@@ -60,10 +73,12 @@ class WalletService
 
     public function walletExists(string $exchangeName, string $symbol)
     {
-        return $this->documentManager->getRepository(Wallet::class)->findOneBy([
-            'symbol' => strtolower($symbol),
-            'exchange' => $exchangeName,
-        ]);
+        return $this->documentManager->getRepository(Wallet::class)->findOneBy(
+            [
+                'symbol'   => strtolower($symbol),
+                'exchange' => $exchangeName,
+            ]
+        );
     }
 
     public function saveOnMemory(Wallet $wallet)
@@ -90,21 +105,19 @@ class WalletService
             '$match' => [
                 '$or' => [
                     ['amount' => ['$gt' => 0]],
-                    ['inOrder' => ['$gt' => 0]]
-                ]
+                    ['inOrder' => ['$gt' => 0]],
+                ],
             ],
         ];
 
         $pipeline[] = [
             '$group' => [
-                '_id' => '$symbol',
-                'amount' => ['$sum' => '$amount'],
-                'exchange' => ['$addToSet' => '$exchange'],
-                'totalEUR' => ['$sum' => ['$multiply' => ['$eurPrice', '$amount']]],
-                'totalUSD' => ['$sum' => ['$multiply' => ['$usdPrice', '$amount']]],
-                'inOrderEUR' => ['$sum' => ['$multiply' => ['$eurPrice', '$inOrder']]],
-                'inOrderUSD' => ['$sum' => ['$multiply' => ['$usdPrice', '$inOrder']]],
-                'inOrder' => ['$sum' => '$inOrder'],
+                '_id'        => '$symbol',
+                'amount'     => ['$sum' => '$amount'],
+                'exchange'   => ['$addToSet' => '$exchange'],
+                'totalPrice'   => ['$sum' => ['$multiply' => ['$price', '$amount']]],
+                'inOrderPrice' => ['$sum' => ['$multiply' => ['$price', '$inOrder']]],
+                'inOrder'    => ['$sum' => '$inOrder'],
             ],
         ];
 
@@ -141,15 +154,15 @@ class WalletService
             '$match' => [
                 '$or' => [
                     ['amount' => ['$gt' => 0]],
-                    ['inOrder' => ['$gt' => 0]]
-                ]
+                    ['inOrder' => ['$gt' => 0]],
+                ],
             ],
         ];
 
         $pipeline[] = [
             '$project' => [
-                'total' => ['$sum' => ['$multiply' => ['$usdPrice', '$amount']]],
-                'inOrderUSD' => ['$sum' => ['$multiply' => ['$usdPrice', '$inOrder']]],
+                'totalPrice'      => ['$sum' => ['$multiply' => ['$price', '$amount']]],
+                'inOrderPrice' => ['$sum' => ['$multiply' => ['$price', '$inOrder']]],
             ],
         ];
 
@@ -174,7 +187,7 @@ class WalletService
 
         $pipeline[] = [
             '$group' => [
-                '_id' => '$symbol',
+                '_id'   => '$symbol',
                 'total' => ['$sum' => 1],
             ],
         ];

@@ -9,20 +9,29 @@ use App\Utils\CryptoUtils;
 class StatsService
 {
     private $walletService;
-    private $investmentService;
+    private $depositService;
+    private $withdrawService;
 
-    public function __construct(WalletService $walletService, InvestmentService $investmentService)
-    {
+    public function __construct(
+        WalletService $walletService,
+        DepositService $depositService,
+        WithdrawService $withdrawService
+    ) {
         $this->walletService = $walletService;
-        $this->investmentService = $investmentService;
+        $this->depositService = $depositService;
+        $this->withdrawService = $withdrawService;
     }
 
-    public function getTotalAmount(?string $exchange = null): float
+    public function getTotalAmount(bool $addWithdraw = false, ?string $exchange = null): float
     {
         $amount = 0;
         $wallets = $this->walletService->getTotalAmount($exchange);
         foreach ($wallets as $wallet) {
-            $amount += $wallet['total'] + $wallet['inOrderUSD'];
+            $amount += $wallet['totalPrice'] + $wallet['inOrderPrice'];
+        }
+
+        if($addWithdraw) {
+            $amount += $this->withdrawService->getTotal();
         }
 
         return $amount;
@@ -30,11 +39,15 @@ class StatsService
 
     public function calculateProfit(): float
     {
-        $amount = $this->getTotalAmount();
+        $amount = $this->getTotalAmount(true);
 
-        $investment = $this->investmentService->getTotalInvestment();
+        $deposit = $this->depositService->getTotal();
 
-        return ($amount - $investment) / $investment * 100;
+        if($deposit == 0) {
+            return 0;
+        }
+
+        return ($amount - $deposit) / $deposit * 100;
     }
 
     public function countCrypto(): int
@@ -82,7 +95,7 @@ class StatsService
     public function getListOfCrypto(): array
     {
         $criteria = [];
-        $global = $this->getTotalAmount();
+        $global = $this->getTotalAmount(false);
         $wallets = $this->walletService->aggregateWallets($criteria);
         foreach ($wallets as $key => $wallet) {
             $wallets[$key]['percentage'] = (($wallet['totalUSD'] + $wallet['inOrderUSD']) * 100) / $global;

@@ -6,6 +6,6 @@ namespace App\Repository;
 
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
-class InvestmentRepository extends DocumentRepository
+class DepositRepository extends DocumentRepository
 {
 }

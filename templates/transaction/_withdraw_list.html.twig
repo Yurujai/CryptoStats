@@ -1,0 +1,38 @@
+<div class="card border-left-success shadow h-80 deposit-list">
+    <div class="card-header">
+        {{ "Withdraw list"|trans }}
+    </div>
+    <div class="card-body">
+        <div class="row no-gutters align-items-center">
+            <table class="table table-md table-responsive table-striped">
+                <thead>
+                <tr>
+                    <td>{{ "Nº"|trans }}</td>
+                    <td>{{ "Amount"|trans }}</td>
+                    <td>{{ "Symbol"|trans }}</td>
+                    <td>{{ "Moved to"|trans }}</td>
+                    <td>{{ "Added"|trans }}</td>
+                    <td>&nbsp;</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for withdraw in withdraws %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ withdraw.amount|number_format(2) }}</td>
+                        <td>{{ withdraw.symbol|upper }}</td>
+                        <td>{{ withdraw.movedTo }}</td>
+                        <td>{{ withdraw.added|date('Y-m-d') }}</td>
+                        <td>
+                            <a title="{{ "Remove"|trans }}" href="{{ path('deposit_remove_amount', {'deposit': withdraw.id}) }}">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

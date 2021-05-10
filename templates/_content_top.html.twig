@@ -11,15 +11,20 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ path('investment') }}" class="nav-link">
-                    {{ "Investment"|trans }}
+                <a href="{{ path('transaction_show') }}" class="nav-link">
+                    {{ "Transactions"|trans }}
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#" title="{{ "Withdraw"|trans }}" class="nav-link disabled">
-                    {{ "Withdraw"|trans }}
-                </a>
-            </li>
+{#            <li class="nav-item">#}
+{#                <a href="{{ path('deposit') }}" class="nav-link">#}
+{#                    {{ "Deposit"|trans }}#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item">#}
+{#                <a href="#" title="{{ "Withdraw"|trans }}" class="nav-link disabled">#}
+{#                    {{ "Withdraw"|trans }}#}
+{#                </a>#}
+{#            </li>#}
             <li class="nav-item">
                 <a href="#" title="{{ "Update wallets"|trans }}" class="nav-link update-element" data-url="{{ path('crypto_stats_update_wallets') }}">
                     {{ "Update wallets"|trans }}

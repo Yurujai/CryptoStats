@@ -6,9 +6,9 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use MongoDB\BSON\ObjectId;
 
 /**
- * @MongoDB\Document(repositoryClass="App\Repository\InvestmentRepository")
+ * @MongoDB\Document(repositoryClass="App\Repository\DepositRepository")
  */
-class Investment
+class Deposit
 {
     /**
      * @MongoDB\Id
@@ -33,18 +33,18 @@ class Investment
     /**
      * @MongoDB\Field(type="string")
      */
-    private $currency;
+    private $symbol;
 
     /**
      * @MongoDB\Field(type="string")
      */
     private $exchange;
 
-    public function __construct(float $amount, string $currency, string $exchange, \DateTimeInterface $added)
+    public function __construct(float $amount, string $symbol, string $exchange, \DateTimeInterface $added)
     {
         $this->id = new ObjectId();
         $this->amount = $amount;
-        $this->currency = strtolower($currency);
+        $this->symbol = strtolower($symbol);
         $this->create = new \DateTime();
         $this->added = $added;
         $this->exchange = $exchange;
@@ -65,14 +65,14 @@ class Investment
         $this->amount = $amount;
     }
 
-    public function getCurrency(): string
+    public function getSymbol(): string
     {
-        return $this->currency;
+        return $this->symbol;
     }
 
-    public function setCurrency(string $currency): void
+    public function setSymbol(string $symbol): void
     {
-        $this->currency = $currency;
+        $this->symbol = $symbol;
     }
 
     public function getExchange(): string

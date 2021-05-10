@@ -3,6 +3,7 @@
 namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use App\Utils\CryptoUtils;
 use MongoDB\BSON\ObjectId;
 
 /**
@@ -10,15 +11,34 @@ use MongoDB\BSON\ObjectId;
  */
 class Wallet
 {
+    protected const WALLET_TYPE_FIAT = 1;
+    protected const WALLET_TYPE_STABLE = 2;
+    protected const WALLET_TYPE_CRYPTO = 3;
+
     /**
      * @MongoDB\Id
      */
     private $id;
 
     /**
-     * @MongoDB\Field(type="string")
+     * @MongoDB\Field(type="int")
      */
-    private $exchange;
+    private $type;
+
+    /**
+     * @MongoDB\Field(type="float")
+     */
+    private $amount;
+
+    /**
+     * @MongoDB\Field(type="date")
+     */
+    private $create;
+
+    /**
+     * @MongoDB\Field(type="date")
+     */
+    private $updated;
 
     /**
      * @MongoDB\Field(type="string")
@@ -26,9 +46,9 @@ class Wallet
     private $symbol;
 
     /**
-     * @MongoDB\Field(type="float")
+     * @MongoDB\Field(type="string")
      */
-    private $amount;
+    private $exchange;
 
     /**
      * @MongoDB\Field(type="float")
@@ -38,22 +58,25 @@ class Wallet
     /**
      * @MongoDB\Field(type="float")
      */
-    private $eurPrice;
+    private $price;
 
-    /**
-     * @MongoDB\Field(type="float")
-     */
-    private $usdPrice;
-
-    public function __construct(string $exchange, string $symbol, float $amount, float $inOrder, float $eurPrice, float $usdPrice)
-    {
+    public function __construct(
+        string $exchange,
+        string $symbol,
+        float $amount,
+        float $inOrder,
+        \DateTimeInterface $updated,
+        float $price
+    ) {
         $this->id = new ObjectId();
         $this->exchange = $exchange;
         $this->symbol = strtolower($symbol);
+        $this->create = new \DateTime();
+        $this->updated = $updated;
         $this->amount = $amount;
         $this->inOrder = $inOrder;
-        $this->eurPrice = $eurPrice;
-        $this->usdPrice = $usdPrice;
+        $this->price = $price;
+        $this->type = $this->setTypeFromSymbol($symbol);
     }
 
     public function getId(): ObjectId
@@ -101,23 +124,66 @@ class Wallet
         $this->inOrder = $inOrder;
     }
 
-    public function getEurPrice(): float
+    public function getCreate(): \DateTime
     {
-        return $this->eurPrice;
+        return $this->create;
     }
 
-    public function setEurPrice(float $eurPrice): void
+    public function setCreate(\DateTime $create): void
     {
-        $this->eurPrice = $eurPrice;
+        $this->create = $create;
     }
 
-    public function getUsdPrice(): float
+    public function getUpdated(): \DateTimeInterface
     {
-        return $this->usdPrice;
+        return $this->updated;
     }
 
-    public function setUsdPrice(float $usdPrice): void
+    public function setUpdated(\DateTimeInterface $updated): void
     {
-        $this->usdPrice = $usdPrice;
+        $this->updated = $updated;
+    }
+
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): void
+    {
+        $this->price = $price;
+    }
+
+    public function setTypeFromSymbol(string $symbol): int
+    {
+        if (CryptoUtils::isFiatCoin(strtolower($symbol))) {
+            return self::WALLET_TYPE_FIAT;
+        }
+
+        if (CryptoUtils::isStableCoin(strtolower($symbol))) {
+            return self::WALLET_TYPE_STABLE;
+        }
+
+        return self::WALLET_TYPE_CRYPTO;
+    }
+
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    public function isFiatCoin(): bool
+    {
+        return $this->type === self::WALLET_TYPE_FIAT;
+    }
+
+    public function isStableCoin(): bool
+    {
+        return $this->type === self::WALLET_TYPE_STABLE;
+    }
+
+    public function isCrypto(): bool
+    {
+        return $this->type === self::WALLET_TYPE_CRYPTO;
     }
 }

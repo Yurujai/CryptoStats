@@ -2,14 +2,18 @@
 
 namespace App\Document;
 
+use App\Utils\CryptoUtils;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use MongoDB\BSON\ObjectId;
 
 /**
  * @MongoDB\Document(repositoryClass="App\Repository\WithdrawRepository")
  */
 class Withdraw
 {
+    protected const WITHDRAW_TYPE_FIAT = 1;
+    protected const WITHDRAW_TYPE_STABLE = 2;
+    protected const WITHDRAW_TYPE_CRYPTO = 3;
+
     /**
      * @MongoDB\Id
      */
@@ -26,6 +30,11 @@ class Withdraw
     private $create;
 
     /**
+     * @MongoDB\Field(type="date")
+     */
+    private $added;
+
+    /**
      * @MongoDB\Field(type="string")
      */
     private $symbol;
@@ -36,17 +45,22 @@ class Withdraw
     private $movedTo;
 
     /**
-     * @MongoDB\Field(type="string")
+     * @MongoDB\Field(type="int")
      */
-    private $comment;
+    private $type;
 
-    public function __construct(float $amount, string $symbol, string $movedTo, ?string $comment, \DateTimeInterface $create)
-    {
+    public function __construct(
+        float $amount,
+        string $symbol,
+        string $movedTo,
+        \DateTimeInterface $added
+    ) {
         $this->amount = $amount;
-        $this->symbol = $symbol;
+        $this->symbol = strtolower($symbol);
         $this->movedTo = $movedTo;
-        $this->create = $create;
-        $this->comment = $comment;
+        $this->added = $added;
+        $this->create = new \DateTime();
+        $this->type = $this->setTypeFromSymbol($symbol);
     }
 
     public function getId()
@@ -69,12 +83,22 @@ class Withdraw
         $this->amount = $amount;
     }
 
-    public function getCreate(): \DateTimeInterface
+    public function getAdded(): \DateTimeInterface
+    {
+        return $this->added;
+    }
+
+    public function setAdded(\DateTimeInterface $added): void
+    {
+        $this->added = $added;
+    }
+
+    public function getCreate(): \DateTime
     {
         return $this->create;
     }
 
-    public function setCreate(\DateTimeInterface $create): void
+    public function setCreate(\DateTime $create): void
     {
         $this->create = $create;
     }
@@ -99,14 +123,36 @@ class Withdraw
         $this->movedTo = $movedTo;
     }
 
-    public function getComment(): string
+    public function setTypeFromSymbol(string $symbol): int
     {
-        return $this->comment;
+        if (CryptoUtils::isFiatCoin(strtolower($symbol))) {
+            return self::WITHDRAW_TYPE_FIAT;
+        }
+
+        if (CryptoUtils::isStableCoin(strtolower($symbol))) {
+            return self::WITHDRAW_TYPE_STABLE;
+        }
+
+        return self::WITHDRAW_TYPE_CRYPTO;
     }
 
-    public function setComment(?string $comment): void
+    public function getType(): int
     {
-        $this->comment = $comment;
+        return $this->type;
     }
 
+    public function isFiatCoin(): bool
+    {
+        return $this->type === self::WITHDRAW_TYPE_FIAT;
+    }
+
+    public function isStableCoin(): bool
+    {
+        return $this->type === self::WITHDRAW_TYPE_STABLE;
+    }
+
+    public function isCrypto(): bool
+    {
+        return $this->type === self::WITHDRAW_TYPE_CRYPTO;
+    }
 }

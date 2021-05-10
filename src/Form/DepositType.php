@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class InvestmentType extends AbstractType
+class DepositType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -28,10 +28,10 @@ class InvestmentType extends AbstractType
                 ]
             )
             ->add(
-                'currency',
+                'symbol',
                 ChoiceType::class,
                 [
-                    'label' => 'currency',
+                    'label' => 'symbol',
                     'attr' => ['class' => 'form-control'],
                     'required' => true,
                     'choices' => [
@@ -70,6 +70,6 @@ class InvestmentType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'crypto_stats_investment_form';
+        return 'crypto_stats_deposit_form';
     }
 }

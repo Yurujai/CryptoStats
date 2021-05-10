@@ -50,13 +50,9 @@ class BitvavoExchangeService implements ExchangeInterface
 
         foreach ($balance as $item) {
             try {
-                if ('EUR' === $item['symbol']) {
-                    $eurPrice = (float) 1;
-                    $usdPrice = PriceConversionUtils::getUSDFromEUR($eurPrice);
-                } else {
-                    $eurPrice = (float) $this->getPriceOfMarket($item['symbol']);
-                    $usdPrice = PriceConversionUtils::getUSDFromEUR($eurPrice);
-                }
+                $price = ('EUR' === $item['symbol']) ?
+                    PriceConversionUtils::getUSDFromEUR(1) :
+                    PriceConversionUtils::getUSDFromEUR($this->getPriceOfMarket($item['symbol']));
             } catch (\Exception $exception) {
                 continue;
             }
@@ -66,8 +62,8 @@ class BitvavoExchangeService implements ExchangeInterface
                 $item['symbol'],
                 $item['available'],
                 $item['inOrder'],
-                $eurPrice,
-                $usdPrice
+                new \DateTime(),
+                $price
             );
         }
         $this->walletService->save();

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\InvestmentType;
+use App\Form\DepositType;
 use App\Form\WithdrawType;
-use App\Service\InvestmentService;
+use App\Service\DepositService;
 use App\Service\WithdrawService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,12 +15,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class homeController extends AbstractController
 {
-    private $investmentService;
+    private $depositService;
     private $withdrawService;
 
-    public function __construct(InvestmentService $investmentService, WithdrawService $withdrawService)
+    public function __construct(DepositService $depositService, WithdrawService $withdrawService)
     {
-        $this->investmentService = $investmentService;
+        $this->depositService = $depositService;
         $this->withdrawService = $withdrawService;
     }
 
@@ -29,15 +29,15 @@ class homeController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $investmentForm = $this->createForm(InvestmentType::class, null, []);
-        $investmentForm->handleRequest($request);
-        if ($investmentForm->isSubmitted() && $investmentForm->isValid()) {
-            $investmentData = $investmentForm->getData();
-            $this->investmentService->add(
-                (float) $investmentData['amount'],
-                $investmentData['currency'],
-                $investmentData['exchange'],
-                $investmentData['added']
+        $depositForm = $this->createForm(DepositType::class, null, []);
+        $depositForm->handleRequest($request);
+        if ($depositForm->isSubmitted() && $depositForm->isValid()) {
+            $depositData = $depositForm->getData();
+            $this->depositService->add(
+                (float) $depositData['amount'],
+                $depositData['symbol'],
+                $depositData['exchange'],
+                $depositData['added']
             );
         }
 
@@ -49,13 +49,12 @@ class homeController extends AbstractController
                 (float) $withdrawData['amount'],
                 $withdrawData['symbol'],
                 $withdrawData['moved_to'],
-                $withdrawData['comment'],
                 $withdrawData['date']
             );
         }
 
         return $this->render('/home/template.html.twig', [
-            'investmentForm' => $investmentForm->createView(),
+            'depositForm' => $depositForm->createView(),
             'withdrawForm' => $withdrawForm->createView()
         ]);
     }

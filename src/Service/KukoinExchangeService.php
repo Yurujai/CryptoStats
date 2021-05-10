@@ -56,13 +56,7 @@ class KukoinExchangeService implements ExchangeInterface
             $eurPrice = 0;
             try {
                 if ((float) $item['balance'] > 0) {
-                    if ('usdt' === strtolower($item['currency'])) {
-                        $usdPrice = 1;
-                        $eurPrice = PriceConversionUtils::getEURFromUSD((float) 1);
-                    } else {
-                        $usdPrice = (float) $this->getPriceOfMarket($item['currency']);
-                        $eurPrice = PriceConversionUtils::getEURFromUSD($usdPrice);
-                    }
+                    $price = ('usdt' === strtolower($item['currency'])) ? 1 : $this->getPriceOfMarket($item['currency']);
                 }
             } catch (\Exception $exception) {
                 continue;
@@ -73,8 +67,8 @@ class KukoinExchangeService implements ExchangeInterface
                 $item['currency'],
                 $item['balance'],
                 $item['holds'],
-                $eurPrice,
-                $usdPrice
+                new \DateTime(),
+                $price
             );
         }
 

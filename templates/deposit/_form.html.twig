@@ -1,0 +1,27 @@
+<div class="card border-left-success shadow h-80">
+    <div class="card-header">
+        {{ "Add deposit"|trans }}
+    </div>
+    <div class="card-body">
+        <div class="no-gutters align-items-center">
+            {{ form_start(depositForm)}}
+            <div class="deposit-form-input">
+                {{ form_widget(depositForm.amount) }}
+            </div>
+            <div class="deposit-form-input">
+                {{ form_widget(depositForm.currency) }}
+            </div>
+            <div class="deposit-form-input">
+                {{ form_widget(depositForm.exchange) }}
+            </div>
+            <div class="deposit-form-input">
+                {{ form_widget(depositForm.added) }}
+            </div>
+            <div class="deposit-form-input">
+                <button type="submit" class="btn btn-block btn-primary">{{ "Add"|trans }}</button>
+            </div>
+            {{ form_end(depositForm) }}
+        </div>
+    </div>
+</div>
+

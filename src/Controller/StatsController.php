@@ -38,7 +38,7 @@ class StatsController extends AbstractController
     {
         $wallets = $this->statsService->getListOfCrypto();
 
-        return $this->render('/stats/_list.html.twig', [
+        return $this->render('/stats/_deposit_list.html.twig', [
             'wallets' => $wallets,
         ]);
     }
@@ -70,7 +70,7 @@ class StatsController extends AbstractController
      */
     public function statsByExchange(string $exchange): Response
     {
-        $totalAmount = $this->statsService->getTotalAmount($exchange);
+        $totalAmount = $this->statsService->getTotalAmount(false, $exchange);
 
         return $this->render('/stats/global/_exchange.html.twig', [
             'total' => $totalAmount,
@@ -97,7 +97,7 @@ class StatsController extends AbstractController
      */
     public function totalBlock(): Response
     {
-        $amount = $this->statsService->getTotalAmount();
+        $amount = $this->statsService->getTotalAmount(true);
 
         return $this->render('/resources/_block.html.twig', [
             'headerText' => 'Total amount',

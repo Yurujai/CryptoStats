@@ -46,21 +46,9 @@ class WithdrawType extends AbstractType
                     'label' => 'Moved to',
                     'attr' => [
                         'class' => 'form-control',
-                        'placeholder' => 'moved to.... ( nano ledger, metamask, bank account, ... )',
+                        'placeholder' => 'moved to.... ( hardware wallet, bought something, bank account, ... )',
                     ],
                     'required' => true,
-                ]
-            )
-            ->add(
-                'comment',
-                TextType::class,
-                [
-                    'label' => 'Comment',
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => 'comments',
-                    ],
-                    'required' => false,
                 ]
             )
             ->add(

@@ -53,17 +53,9 @@ class GateIOExchangeService implements ExchangeInterface
 
         $balance = reset($balance);
         foreach ($balance as $item) {
-            $usdPrice = 0;
-            $eurPrice = 0;
             try {
                 if ((float) $item->getAvailable() > 0) {
-                    if ('usdt' === strtolower($item->getCurrency())) {
-                        $usdPrice = 1;
-                        $eurPrice = PriceConversionUtils::getEURFromUSD((float) 1);
-                    } else {
-                        $usdPrice = $this->getPriceOfMarket($item->getCurrency());
-                        $eurPrice = PriceConversionUtils::getEURFromUSD($usdPrice);
-                    }
+                    $price = ('usdt' === strtolower($item->getCurrency())) ? 1 : $this->getPriceOfMarket($item->getCurrency());
                 }
             } catch (\Exception $exception) {
                 continue;
@@ -74,8 +66,8 @@ class GateIOExchangeService implements ExchangeInterface
                 $item->getCurrency(),
                 $item->getAvailable(),
                 $item->getLocked(),
-                $eurPrice,
-                $usdPrice
+                new \DateTime(),
+                $price
             );
         }
 

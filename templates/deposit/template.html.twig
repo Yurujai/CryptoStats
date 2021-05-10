@@ -1,21 +1,21 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{ "Crypto Stats - Investment"|trans }}{% endblock %}
+{% block title %}{{ "Crypto Stats - Deposit"|trans }}{% endblock %}
 
 {% block body %}
 
     <div class="container-fluid">
         <div class="row justify-content-md-center">
-            {{ render(controller('App\\Controller\\InvestmentController::block')) }}
-            {% include "/investment/_price.html.twig" %}
+            {{ render(controller('App\\Controller\\DepositController::block')) }}
+            {% include "/deposit/_price.html.twig" %}
         </div>
         <br />
         <div class="row">
             <div class="col-sm">
-                {% include "/investment/_form.html.twig" %}
+                {% include "/deposit/_deposit_form.html.twig" %}
             </div>
             <div class="col-sm-10">
-                {% include "/investment/_list.html.twig" %}
+                {% include "/deposit/_deposit_list.html.twig" %}
             </div>
         </div>
     </div>

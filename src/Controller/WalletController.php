@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Service\BinanceExchangeService;
 use App\Service\BitvavoExchangeService;
-use App\Service\CoinbaseExchangeService;
 use App\Service\GateIOExchangeService;
 use App\Service\KukoinExchangeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,35 +17,32 @@ class WalletController extends AbstractController
 {
     private $binanceExchangeService;
     private $bitvavoExchangeService;
-    private $coinbaseExchangeService;
     private $kukoinExchangeService;
     private $gateIOExchangeService;
 
     public function __construct(
         BinanceExchangeService $binanceExchangeService,
         BitvavoExchangeService $bitvavoExchangeService,
-        CoinbaseExchangeService $coinbaseExchangeService,
         KukoinExchangeService $kukoinExchangeService,
         GateIOExchangeService $gateIOExchangeService
     ) {
         $this->binanceExchangeService = $binanceExchangeService;
         $this->bitvavoExchangeService = $bitvavoExchangeService;
-        $this->coinbaseExchangeService = $coinbaseExchangeService;
         $this->kukoinExchangeService = $kukoinExchangeService;
         $this->gateIOExchangeService = $gateIOExchangeService;
     }
 
-    /**
-     * @Route("/last/update/wallets", name="crypto_stats_last_updated_wallets")
-     */
-    public function lastWalletUpdate(): Response
-    {
-        return $this->render('/resources/_block.html.twig', [
-            'headerText' => 'Last updated',
-            'value' => new \DateTime(),
-            'icon' => 'fas fa-calendar-alt',
-        ]);
-    }
+//    /**
+//     * @Route("/last/update/wallets", name="crypto_stats_last_updated_wallets")
+//     */
+//    public function lastWalletUpdate(): Response
+//    {
+//        return $this->render('/resources/_block.html.twig', [
+//            'headerText' => 'Last updated',
+//            'value' => new \DateTime(),
+//            'icon' => 'fas fa-calendar-alt',
+//        ]);
+//    }
 
     /**
      * @Route("/update/wallets", name="crypto_stats_update_wallets", methods={"POST"})
@@ -55,7 +51,6 @@ class WalletController extends AbstractController
     {
         $this->binanceExchangeService->saveBalance();
         $this->bitvavoExchangeService->saveBalance();
-        $this->coinbaseExchangeService->saveBalance();
         $this->kukoinExchangeService->saveBalance();
         $this->gateIOExchangeService->saveBalance();
 
@@ -69,7 +64,6 @@ class WalletController extends AbstractController
     {
         $this->binanceExchangeService->removeWallets();
         $this->bitvavoExchangeService->removeWallets();
-        $this->coinbaseExchangeService->removeWallets();
         $this->kukoinExchangeService->removeWallets();
         $this->gateIOExchangeService->removeWallets();
 
