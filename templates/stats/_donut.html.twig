@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 <div class="col-sm-12 col-md-6 text-center">
     <div class="card border-left-primary shadow h-100">
         <div class="card-header">
@@ -8,25 +10,62 @@
         </div>
     </div>
 </div>
+
 <script>
-    window.onload = function () {
-        var chart = new CanvasJS.Chart("chartContainer", {
-            animationEnabled: true,
-            backgroundColor: "transparent",
-            width: 700,
-            height: 700,
-            data: [{
-                type: "doughnut",
-                indexLabelFontSize: 20,
-                indexLabel: "  {label}  ",
-                indexLabelFontFamily: "Garamond",
-                indexLabelFontColor: "darkgrey",
-                indexLabelLineColor: "darkgrey",
-                indexLabelPlacement: "outside",
-                toolTipContent: "<b>{label}:</b> {y} (#percent%)",
-                dataPoints: {{ donutGlobal|json_encode|raw }}
-            }]
-        });
-        chart.render();
-    }
+    var options = {
+        legend: {
+            position: 'bottom',
+        },
+        chart: {
+            type: 'donut',
+        },
+        series: {{ values|json_encode|raw }},
+        labels: {{ labels|json_encode|upper|raw }},
+        plotOptions: {
+            pie: {
+                expandOnClick: false,
+                donut: {
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true,
+                            fontSize: '22px',
+                            fontWeight: 400,
+                            color: '#ccc',
+                            offsetY: -10,
+                            formatter: function (val) {
+                                return val.toUpperCase() + ' Total';
+                            }
+                        },
+                        value: {
+                            show: true,
+                            fontSize: '16px',
+                            fontWeight: 600,
+                            color: undefined,
+                            offsetY: 16,
+                            formatter: function (val) {
+                                return '$'+val;
+                            }
+                        },
+                        total: {
+                            show: true,
+                            showAlways: false,
+                            label: 'AMOUNT',
+                            fontSize: '18px',
+                            fontWeight: 600,
+                            color: '#373d3f',
+                            formatter: function (w) {
+                                return w.globals.seriesTotals.reduce((a, b) => {
+                                    return a + b
+                                }, 0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chartContainer"), options);
+    chart.render();
 </script>

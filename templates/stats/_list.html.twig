@@ -4,7 +4,7 @@
             {{ "Wallet list"|trans }}
         </div>
         <div class="card-body">
-            <table id="table-data" data-order='[[ 4, "desc" ]]' class="table table-md table-striped">
+            <table id="table-data" data-order='[[ 4, "desc" ]]' class="table table-md table-responsivetable-striped">
                 <thead>
                 <tr>
                     <td>{{ "Crypto"|trans }}</td>
@@ -20,7 +20,7 @@
                         <td>{{ item._id|upper}}</td>
                         <td>{{ item.amount|number_format(8) }}</td>
                         <td>{{ item.inOrder|number_format(8) }}</td>
-                        <td>{{ (item.totalUSD + item.inOrderUSD)|number_format(2) }}</td>
+                        <td>{{ (item.totalPrice + item.inOrderPrice)|number_format(2) }}</td>
                         <td>{{ item.percentage|number_format(2) }}%</td>
                     </tr>
                 {% endfor %}

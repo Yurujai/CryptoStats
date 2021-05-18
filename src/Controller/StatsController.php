@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Service\BinanceExchangeService;
+use App\Service\BitvavoExchangeService;
+use App\Service\GateIOExchangeService;
+use App\Service\KukoinExchangeService;
 use App\Service\StatsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,139 +30,56 @@ class StatsController extends AbstractController
         return $this->render('/stats/global/template.html.twig');
     }
 
-    /**
-     * @Route("/statsbymarket", name="crypto_stats_generic_stats_by_market")
-     */
-    public function statsByMarket(): Response
+    public function balanceProgressBar(): Response
     {
-        return $this->render('/stats/template.html.twig');
-    }
+        $balance = $this->statsService->getTotalAmount(true);
+        $deposit = $this->statsService->getDepositAmount();
 
-    public function listOfCryptoBlock(): Response
-    {
-        $wallets = $this->statsService->getListOfCrypto();
-
-        return $this->render('/stats/_deposit_list.html.twig', [
-            'wallets' => $wallets,
+        return $this->render('/block/balance_progress_bar.html.twig', [
+            'title' => 'Portfolio balance',
+            'balance' => $balance,
+            'deposit' => $deposit,
         ]);
     }
 
-    public function donutChart(): Response
-    {
-        $wallets = $this->statsService->getListOfCrypto();
-        $donutGlobal = [];
-        $labels = [];
-        $values = [];
-        foreach ($wallets as $wallet) {
-            $donutGlobal[] = [
-                'y' => $wallet['percentage'],
-                'label' => $wallet['_id'],
-            ];
-            $labels[] = $wallet['_id'];
-            $values[] = $wallet['percentage'];
-        }
-
-        return $this->render('/stats/_donut.html.twig', [
-            'donutGlobal' => $donutGlobal,
-            'labels' => $labels,
-            'values' => $values,
-        ]);
-    }
-
-    /**
-     * @Route("/global/{exchange}/", name="crypto_trades_exchanges_global")
-     */
-    public function statsByExchange(string $exchange): Response
-    {
-        $totalAmount = $this->statsService->getTotalAmount(false, $exchange);
-
-        return $this->render('/stats/global/_exchange.html.twig', [
-            'total' => $totalAmount,
-            'exchange' => $exchange,
-        ]);
-    }
-
-    /**
-     * @Route("/profit/percentage", name="crypto_stats_profit_percentage")
-     */
-    public function profitBlock(): Response
+    public function balance(): Response
     {
         $profit = $this->statsService->calculateProfit();
+        $balance = $this->statsService->getTotalAmount(true);
+        $deposit = $this->statsService->getDepositAmount();
+        $withdraw = $this->statsService->getWithdrawAmount();
 
-        return $this->render('/resources/_block.html.twig', [
-            'headerText' => 'Profit',
-            'value' => number_format($profit, 2),
-            'icon' => 'fas fa-percent',
+        return $this->render('/block/balance.html.twig', [
+            'title' => 'Portfolio balance',
+            'balance' => $balance,
+            'deposit' => $deposit,
+            'withdraw' => $withdraw,
+            'profit' => $profit
+        ]);
+
+    }
+
+    public function exchanges(): Response
+    {
+        $data = $this->statsService->getTotalAmountByExchange();
+        $labels = array_keys($data);
+        $values = array_values($data);
+        $total = array_sum($values);
+        return $this->render('/block/exchange.html.twig', [
+            'title' => 'Exchange balance',
+            'data' => $data,
+            'labels' => $labels,
+            'values' => $values,
+            'total' => $total,
         ]);
     }
 
-    /**
-     * @Route("/total/amount", name="crypto_stats_total_amount")
-     */
-    public function totalBlock(): Response
+    public function wallets(): Response
     {
-        $amount = $this->statsService->getTotalAmount(true);
+        $wallets = $this->statsService->getListOfCrypto();
 
-        return $this->render('/resources/_block.html.twig', [
-            'headerText' => 'Total amount',
-            'value' => number_format($amount, 2),
-            'icon' => 'fas fa-coins',
-        ]);
-    }
-
-    /**
-     * @Route("/crypto/total", name="crypto_stats_crypto_total")
-     */
-    public function totalCrypto(): Response
-    {
-        $numberOfCrypto = $this->statsService->countCrypto();
-
-        return $this->render('/resources/_block.html.twig', [
-            'headerText' => 'Total Coins',
-            'value' => $numberOfCrypto,
-            'icon' => 'fab fa-bitcoin',
-        ]);
-    }
-
-    /**
-     * @Route("/crypto/number", name="crypto_stats_crypto_coin_number")
-     */
-    public function numberOfCryptoCoinBlock(): Response
-    {
-        $numberOfCrypto = $this->statsService->getNumberOfCrypto();
-
-        return $this->render('/resources/_block.html.twig', [
-            'headerText' => 'Crypto',
-            'value' => $numberOfCrypto,
-            'icon' => 'fab fa-bitcoin',
-        ]);
-    }
-
-    /**
-     * @Route("/crypto/stable", name="crypto_stats_crypto_stable_number")
-     */
-    public function numberOfStableCoinBlock(): Response
-    {
-        $numberOfCrypto = $this->statsService->getNumberOfStable();
-
-        return $this->render('/resources/_block.html.twig', [
-            'headerText' => 'Stable coins',
-            'value' => $numberOfCrypto,
-            'icon' => 'fab fa-bitcoin',
-        ]);
-    }
-
-    /**
-     * @Route("/crypto/fiat", name="crypto_stats_crypto_fiat_number")
-     */
-    public function numberOfFiatCoinBlock(): Response
-    {
-        $numberOfCrypto = $this->statsService->getNumberOfFiat();
-
-        return $this->render('/resources/_block.html.twig', [
-            'headerText' => 'Fiat',
-            'value' => $numberOfCrypto,
-            'icon' => 'fab fa-bitcoin',
+        return $this->render('/block/wallets.html.twig', [
+            'wallets' => $wallets,
         ]);
     }
 }

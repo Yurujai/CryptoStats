@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Utils\BinanceExchangeUtils;
-use App\Utils\PriceConversionUtils;
 use Binance\API;
 
 class BinanceExchangeService implements ExchangeInterface

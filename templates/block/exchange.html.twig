@@ -1,0 +1,42 @@
+{% set fiat_coins = data_of_fiat() %}
+{% set stable_coins = data_of_stable() %}
+{% set crypto_coins = data_of_crypto() %}
+{% set style = 'color:red; margin-left:1rem;' %}
+{% set icon = 'fa fa-arrow-down' %}
+
+<div class="col-lg-6 col-12 mb-4">
+    <div class="card border-left-success shadow h-80">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col-12 mr-2">
+                    <div class="text-xs text-success text-uppercase mb-2">
+                        {{ title }}
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12 mr-0 text-center">
+                    <div id="exchangeChart"></div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="text-xs text-info text-uppercase mb-2">
+                        {{ "Distribution" }}
+                    </div>
+                    <div class="col-12">
+                        {% for key,element in data %}
+                            {% set percentage = (element * 100)/total %}
+                            <small class="text-success"><strong>${{ element|number_format(2) }}</strong>{{ " on "|trans }} {{ key }} </small>
+                            <div class="progress mb-2" style="height: 1.5rem;">
+                                <div class="progress-bar" role="progressbar" style="width: {{ percentage|number_format(2) }}%" aria-valuemax="100">
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    {% include "/js/apexChartDonut.js.twig" with { 'values': values, 'labels': labels, 'chartDivId': 'exchangeChart' } %}
+</script>

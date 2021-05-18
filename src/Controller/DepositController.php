@@ -49,7 +49,7 @@ class DepositController extends AbstractController
     {
         $this->depositService->remove($deposit);
 
-        return $this->redirectToRoute('deposit');
+        return $this->redirectToRoute('transaction_show');
     }
 
     /**

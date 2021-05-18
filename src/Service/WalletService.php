@@ -194,4 +194,12 @@ class WalletService
 
         return iterator_to_array($collection->aggregate($pipeline, ['cursor' => []]));
     }
+
+    public function getExchanges()
+    {
+        return $this->documentManager->createQueryBuilder(Wallet::class)
+            ->distinct('exchange')
+            ->getQuery()
+            ->execute();
+    }
 }

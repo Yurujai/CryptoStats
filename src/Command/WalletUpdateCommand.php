@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Command;
 
 use App\Service\BinanceExchangeService;
 use App\Service\BitvavoExchangeService;
 use App\Service\GateIOExchangeService;
 use App\Service\KukoinExchangeService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class WalletController extends AbstractController
+class WalletUpdateCommand extends Command
 {
+    protected static $defaultName = 'crypto:wallet:update';
     private $binanceExchangeService;
     private $bitvavoExchangeService;
     private $kukoinExchangeService;
@@ -24,37 +24,32 @@ class WalletController extends AbstractController
         BinanceExchangeService $binanceExchangeService,
         BitvavoExchangeService $bitvavoExchangeService,
         KukoinExchangeService $kukoinExchangeService,
-        GateIOExchangeService $gateIOExchangeService
+        GateIOExchangeService $gateIOExchangeService,
+        $name = null
     ) {
+        parent::__construct($name);
         $this->binanceExchangeService = $binanceExchangeService;
         $this->bitvavoExchangeService = $bitvavoExchangeService;
         $this->kukoinExchangeService = $kukoinExchangeService;
         $this->gateIOExchangeService = $gateIOExchangeService;
     }
 
-    /**
-     * @Route("/update/wallets", name="crypto_stats_update_wallets", methods={"POST"})
-     */
-    public function update(): JsonResponse
+    protected function configure(): void
+    {
+        $this
+            ->setDescription('Automatically update wallets')
+            ->setHelp('Automatically update wallets')
+        ;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->binanceExchangeService->saveBalance();
         $this->bitvavoExchangeService->saveBalance();
         $this->kukoinExchangeService->saveBalance();
         $this->gateIOExchangeService->saveBalance();
 
-        return new JsonResponse();
+        return 0;
     }
 
-    /**
-     * @Route("/remove/wallets", name="crypto_stats_remove_wallets")
-     */
-    public function remove(): Response
-    {
-        $this->binanceExchangeService->removeWallets();
-        $this->bitvavoExchangeService->removeWallets();
-        $this->kukoinExchangeService->removeWallets();
-        $this->gateIOExchangeService->removeWallets();
-
-        return $this->redirectToRoute('crypto_stats');
-    }
 }

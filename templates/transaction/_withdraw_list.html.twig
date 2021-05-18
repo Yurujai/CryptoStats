@@ -24,7 +24,7 @@
                         <td>{{ withdraw.movedTo }}</td>
                         <td>{{ withdraw.added|date('Y-m-d') }}</td>
                         <td>
-                            <a title="{{ "Remove"|trans }}" href="{{ path('deposit_remove_amount', {'deposit': withdraw.id}) }}">
+                            <a title="{{ "Remove"|trans }}" href="{{ path('withdraw_remove_amount', {'withdraw': withdraw.id}) }}">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>

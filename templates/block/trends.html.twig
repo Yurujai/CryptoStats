@@ -1,0 +1,42 @@
+<div class="col-lg-6 col-12 mb-4">
+    <div class="card border-left-success shadow h-80">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col-12 mr-2">
+                    <div class="text-xs text-success text-uppercase mb-2">
+                        {{ title }}
+                    </div>
+                </div>
+                <div class="col-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>#</td>
+                                <td>Name</td>
+                                <td>Market Cap. Rank</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for trend in trends %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>
+                                        <img src="{{ trend.item.thumb }}" class="img-responsive rounded" alt="{{ trend.item.name }}" />
+                                        <span class="ml-2">{{ trend.item.name }}</span>
+                                        <a target="_blank" href="https://www.coingecko.com/es/monedas/{{ trend.item.id }}" title="{{ trend.item.name }}">
+                                            <span style="color:#c9c9c9">{{ trend.item.symbol }}</span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ trend.item.market_cap_rank }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

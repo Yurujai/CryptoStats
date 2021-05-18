@@ -9,43 +9,18 @@
 {% block body %}
 
     <div class="row">
-        <div class="col text-right">
-            <a class="btn btn-primary" style="color:white" data-toggle="modal" data-target="#exampleModal">
-                <i class="fa fa-plus"></i> {{ "Add transaction"|trans }}
-            </a>
-        </div>
-    </div>
-    <br />
-
-    <div class="row">
-        {{ render(controller('App\\Controller\\StatsController::statsGlobal')) }}
+        {{ render(controller('App\\Controller\\StatsController::balanceProgressBar')) }}
     </div>
 
     <div class="row">
-        {{ render(controller('App\\Controller\\StatsController::totalCrypto')) }}
-        {{ render(controller('App\\Controller\\StatsController::numberOfCryptoCoinBlock')) }}
-        {{ render(controller('App\\Controller\\StatsController::numberOfStableCoinBlock')) }}
-        {{ render(controller('App\\Controller\\StatsController::numberOfFiatCoinBlock')) }}
+        {{ render(controller('App\\Controller\\StatsController::balance')) }}
+        {{ render(controller('App\\Controller\\StatsController::exchanges')) }}
     </div>
 
-{#    <div class="row">#}
-{#        <div class="col-sm-12" style="margin: 10px 0 10px 0">#}
-{#            <h3>{{ "Exchanges"|trans }}</h3>#}
-{#        </div>#}
-{#        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'binance'})) }}#}
-{#        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'bitvavo'})) }}#}
-{#        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'kukoin'})) }}#}
-{#        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'coinbase'})) }}#}
-{#        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'gateio'})) }}#}
-{#    </div>#}
-
-
-{#    <div class="row">#}
-{#        <div class="col-sm-12" style="margin: 10px 0 10px 0">#}
-{#            <h3>{{ "Data"|trans }}</h3>#}
-{#        </div>#}
-{#        {{ render(controller('App\\Controller\\StatsController::statsByMarket')) }}#}
-{#    </div>#}
+    <div class="row">
+        {{ render(controller('App\\Controller\\StatsController::wallets')) }}
+        {{ render(controller('App\\Controller\\TrendingController::trendingTopics')) }}
+    </div>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

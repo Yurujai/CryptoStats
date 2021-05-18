@@ -1,0 +1,8 @@
+{% set percentage = ((deposit*100)/balance)|number_format(2) %}
+{% set rest = 100 - percentage %}
+<div class="col-12 mb-2">
+    <div class="progress mb-2" style="height: 2.5rem;">
+        <div class="progress-bar" role="progressbar" style="width: {{ percentage }}%" aria-valuemax="100">{{ percentage ~ '% of Deposits'|trans }}</div>
+        <div class="progress-bar bg-success" role="progressbar" style="width: {{ rest }}%" aria-valuemax="100">{{ rest ~ '% of benefits'|trans }}</div>
+    </div>
+</div>
