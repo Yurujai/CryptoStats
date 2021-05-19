@@ -9,32 +9,56 @@ use App\Utils\CryptoUtils;
 class StatsService
 {
     private $walletService;
-    private $investmentService;
+    private $depositService;
+    private $withdrawService;
 
-    public function __construct(WalletService $walletService, InvestmentService $investmentService)
-    {
+    public function __construct(
+        WalletService $walletService,
+        DepositService $depositService,
+        WithdrawService $withdrawService
+    ) {
         $this->walletService = $walletService;
-        $this->investmentService = $investmentService;
+        $this->depositService = $depositService;
+        $this->withdrawService = $withdrawService;
     }
 
-    public function getTotalAmount(?string $exchange = null): float
+    public function getTotalAmount(bool $addWithdraw = false, ?string $exchange = null): float
     {
         $amount = 0;
         $wallets = $this->walletService->getTotalAmount($exchange);
         foreach ($wallets as $wallet) {
-            $amount += $wallet['total'] + $wallet['inOrderUSD'];
+            $amount += $wallet['totalPrice'] + $wallet['inOrderPrice'];
+        }
+
+        if ($addWithdraw) {
+            $amount += $this->withdrawService->getTotal();
         }
 
         return $amount;
     }
 
+    public function getTotalAmountByExchange(): array
+    {
+        $exchanges = $this->walletService->getExchanges();
+        $data = [];
+        foreach ($exchanges as $exchange) {
+            $data[$exchange] = $this->getTotalAmount(false, $exchange);
+        }
+
+        return $data;
+    }
+
     public function calculateProfit(): float
     {
-        $amount = $this->getTotalAmount();
+        $amount = $this->getTotalAmount(true);
 
-        $investment = $this->investmentService->getTotalInvestment();
+        $deposit = $this->depositService->getTotal();
 
-        return ($amount - $investment) / $investment * 100;
+        if (0 == $deposit) {
+            return 0;
+        }
+
+        return ($amount - $deposit) / $deposit * 100;
     }
 
     public function countCrypto(): int
@@ -45,9 +69,35 @@ class StatsService
     public function amountOfFiat(): float
     {
         $amount = 0;
-        $wallets = $this->walletService->aggregateWallets();
+        $criteria = ['symbol' => ['$in' => CryptoUtils::getListOfFiatCoin()]];
+        $wallets = $this->walletService->aggregateWallets($criteria);
         foreach ($wallets as $wallet) {
-            $amount += $wallet['totalUSD'] + $wallet['inOrderUSD'];
+            $amount += $wallet['totalPrice'] + $wallet['inOrderPrice'];
+        }
+
+        return $amount;
+    }
+
+    public function amountOfStable(): float
+    {
+        $amount = 0;
+        $criteria = ['symbol' => ['$in' => CryptoUtils::getListOfStableCoin()]];
+        $wallets = $this->walletService->aggregateWallets($criteria);
+        foreach ($wallets as $wallet) {
+            $amount += $wallet['totalPrice'] + $wallet['inOrderPrice'];
+        }
+
+        return $amount;
+    }
+
+    public function amountOfCrypto(): float
+    {
+        $amount = 0;
+        $excludeSymbols = array_merge(CryptoUtils::getListOfStableCoin(), CryptoUtils::getListOfFiatCoin());
+        $criteria = ['symbol' => ['$nin' => $excludeSymbols]];
+        $wallets = $this->walletService->aggregateWallets($criteria);
+        foreach ($wallets as $wallet) {
+            $amount += $wallet['totalPrice'] + $wallet['inOrderPrice'];
         }
 
         return $amount;
@@ -81,13 +131,47 @@ class StatsService
 
     public function getListOfCrypto(): array
     {
-        $criteria = [];
-        $global = $this->getTotalAmount();
+        $fiatCoins = CryptoUtils::getListOfFiatCoin();
+        $stableCoins = CryptoUtils::getListOfStableCoin();
+        $criteria = ['symbol' => ['$nin' => array_merge($fiatCoins, $stableCoins)]];
+        $global = $this->getTotalAmount(true);
         $wallets = $this->walletService->aggregateWallets($criteria);
         foreach ($wallets as $key => $wallet) {
-            $wallets[$key]['percentage'] = (($wallet['totalUSD'] + $wallet['inOrderUSD']) * 100) / $global;
+            $wallets[$key]['percentage'] = (($wallet['totalPrice'] + $wallet['inOrderPrice']) * 100) / $global;
+            $wallets[$key]['total'] = (float) number_format(($wallet['totalPrice'] + $wallet['inOrderPrice']), 2);
         }
 
+        $keys = array_column($wallets, 'percentage');
+        array_multisort($keys, SORT_DESC, $wallets);
+
         return $wallets;
+    }
+
+    public function getListOfFiatAndStable(): array
+    {
+        $fiatCoins = CryptoUtils::getListOfFiatCoin();
+        $stableCoins = CryptoUtils::getListOfStableCoin();
+        $criteria = ['symbol' => ['$in' => array_merge($fiatCoins, $stableCoins)]];
+        $global = $this->getTotalAmount(true);
+        $wallets = $this->walletService->aggregateWallets($criteria);
+        foreach ($wallets as $key => $wallet) {
+            $wallets[$key]['percentage'] = (($wallet['totalPrice'] + $wallet['inOrderPrice']) * 100) / $global;
+            $wallets[$key]['total'] = (float) number_format(($wallet['totalPrice'] + $wallet['inOrderPrice']), 2);
+        }
+
+        $keys = array_column($wallets, 'percentage');
+        array_multisort($keys, SORT_DESC, $wallets);
+
+        return $wallets;
+    }
+
+    public function getDepositAmount(): float
+    {
+        return $this->depositService->getTotal();
+    }
+
+    public function getWithdrawAmount(): float
+    {
+        return $this->withdrawService->getTotal();
     }
 }

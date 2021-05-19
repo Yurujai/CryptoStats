@@ -192,15 +192,19 @@ a:focus {
     margin-top:35px;
 }
 
-/** Investment **/
-.investment-form-input {
+/** Deposit **/
+.deposit-form-input {
     margin-top:1rem;
 }
 
-.investment-list {
+.deposit-list {
     min-height: 23rem;
 }
 
 #chartContainer {
     height: 700px !important;
+}
+
+.withdraw-form-input {
+    margin-top:1rem;
 }

@@ -9,32 +9,20 @@
 {% block body %}
 
     <div class="row">
-        {{ render(controller('App\\Controller\\StatsController::statsGlobal')) }}
+        {{ render(controller('App\\Controller\\StatsController::balance')) }}
+        {{ render(controller('App\\Controller\\StatsController::exchanges')) }}
     </div>
 
     <div class="row">
-        {{ render(controller('App\\Controller\\StatsController::totalCrypto')) }}
-        {{ render(controller('App\\Controller\\StatsController::numberOfCryptoCoinBlock')) }}
-        {{ render(controller('App\\Controller\\StatsController::numberOfStableCoinBlock')) }}
-        {{ render(controller('App\\Controller\\StatsController::numberOfFiatCoinBlock')) }}
-    </div>
+        {{ render(controller('App\\Controller\\StatsController::wallets')) }}
 
-    <div class="row">
-        <div class="col-sm-12" style="margin: 10px 0 10px 0">
-            <h3>{{ "Exchanges"|trans }}</h3>
+        <div class="col-lg-6 col-12">
+            <div class="row">
+                {{ render(controller('App\\Controller\\StatsController::fiatAndStable')) }}
+                {{ render(controller('App\\Controller\\TrendingController::trendingTopics')) }}
+            </div>
         </div>
-        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'binance'})) }}
-        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'bitvavo'})) }}
-        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'kukoin'})) }}
-        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'coinbase'})) }}
-        {{ render(controller('App\\Controller\\StatsController::statsByExchange', {'exchange': 'gateio'})) }}
-    </div>
 
-    <div class="row">
-        <div class="col-sm-12" style="margin: 10px 0 10px 0">
-            <h3>{{ "Data"|trans }}</h3>
-        </div>
-        {{ render(controller('App\\Controller\\StatsController::statsByMarket')) }}
     </div>
 
 {% endblock %}

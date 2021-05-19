@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Utils\BinanceExchangeUtils;
-use App\Utils\PriceConversionUtils;
 use Binance\API;
 
 class BinanceExchangeService implements ExchangeInterface
@@ -47,17 +46,10 @@ class BinanceExchangeService implements ExchangeInterface
         $balance = $this->getAPIBalance();
 
         foreach ($balance as $market => $item) {
-            $usdPrice = 0;
-            $eurPrice = 0;
+            $price = 0;
             try {
                 if ((float) $item['available'] > 0) {
-                    if ('usdt' === strtolower($market)) {
-                        $usdPrice = 1;
-                        $eurPrice = PriceConversionUtils::getEURFromUSD((float) 1);
-                    } else {
-                        $usdPrice = (float) $this->getPriceOfMarket($market);
-                        $eurPrice = PriceConversionUtils::getEURFromUSD($usdPrice);
-                    }
+                    $price = ('usdt' === strtolower($market)) ? 1 : $this->getPriceOfMarket($market);
                 }
             } catch (\Exception $exception) {
                 continue;
@@ -68,8 +60,8 @@ class BinanceExchangeService implements ExchangeInterface
                 $market,
                 $item['available'],
                 $item['onOrder'],
-                $eurPrice,
-                $usdPrice
+                new \DateTime(),
+                $price
             );
         }
 
@@ -79,6 +71,7 @@ class BinanceExchangeService implements ExchangeInterface
     public function getPriceOfMarket(string $market): float
     {
         $api = $this->createInstance();
+        $market = strtoupper($market);
         try {
             try {
                 $price = $api->price($market.'USDT');

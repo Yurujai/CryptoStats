@@ -7,7 +7,6 @@
         "ext-iconv": "*",
         "bitvavo/php-bitvavo-api": "dev-master",
         "codenix-sv/coingecko-api": "^1.0",
-        "coinbase/coinbase": "^2.8",
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/mongodb-odm-bundle": "^4.3",
         "gateio/gateapi-php": "^5.20",

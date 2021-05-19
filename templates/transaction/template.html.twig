@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ "Crypto Stats - Transactions"|trans }}{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row">
+            {% include "/transaction/_deposit.html.twig" %}
+            {% include "/transaction/_withdraw.html.twig" %}
+        </div>
+    </div>
+
+{% endblock %}

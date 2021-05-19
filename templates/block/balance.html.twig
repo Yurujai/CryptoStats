@@ -1,0 +1,79 @@
+{% set fiat_coins = data_of_fiat() %}
+{% set stable_coins = data_of_stable() %}
+{% set crypto_coins = data_of_crypto() %}
+{% set style = 'color:red; margin-left:1rem;' %}
+{% set icon = 'fa fa-arrow-down' %}
+
+<div class="col-lg-6 col-12  mb-4">
+    <div class="card border-left-success shadow h-80" style="min-height: 400px;">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col-12 mr-2">
+                    <div class="text-xs text-success text-uppercase mb-2">
+                        {{ title }}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 mr-0 text-center">
+                    <h2 class="font-weight-bold text-grey-800" style="display:inline-block">
+                        ${{ balance|number_format(2) }}
+                    </h2>
+                    {% if profit > 0 %}
+                        {% set style = 'color:green; margin-left:1rem;' %}
+                        {% set icon = 'fa fa-arrow-up' %}
+                    {% endif %}
+                    <span class="font-weight-bold" style="{{ style }}">
+                        <i class="{{ icon }}" aria-hidden="true"></i>
+                        {{ profit|number_format(2) }}%
+                    </span>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="text-xs text-info text-uppercase mb-2">
+                        {{ "Distribution" }} <small>({{ fiat_coins.number + stable_coins.number + crypto_coins.number }} {{ "coins"|trans }})</small>
+                    </div>
+                    <div class="col-12">
+                        <small class="text-success"><strong>${{ crypto_coins.amount|number_format(2) }}</strong>{{ " on crypto"|trans }} </small>
+                        <div class="progress mb-2" style="height: 1.5rem;">
+                            <div class="progress-bar" role="progressbar" style="width: {{ crypto_coins.percent|number_format(2) }}%" aria-valuemax="100">
+                                {{ crypto_coins.percent|number_format(2) }}%
+                            </div>
+                        </div>
+
+                        <small class="text-success"><strong>${{ stable_coins.amount|number_format(2) }}</strong>{{ " on stable coins"|trans }} </small>
+                        <div class="progress mb-2" style="height: 1.5rem;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ stable_coins.percent|number_format(2) }}%" aria-valuemax="100">
+                                {{ stable_coins.percent|number_format(2) }}%
+                            </div>
+                        </div>
+
+                        <small class="text-success"><strong>${{ fiat_coins.amount|number_format(2) }}</strong>{{ " on FIAT"|trans }} </small>
+                        <div class="progress mb-2" style="height: 1.5rem;">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: {{ fiat_coins.percent|number_format(2) }}%" aria-valuemax="100">
+                                {{ fiat_coins.percent|number_format(2) }}%
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters align-items-center">
+                <div class="col-12 align-content-center mt-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-4">
+                            <small class="text-success">{{ "Deposits"|trans|upper }}</small>
+                            <h3>${{ deposit|number_format(2) }}</h3>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <small class="text-success">{{ "Withdrawals"|trans|upper }}</small>
+                            <h3>${{ withdraw|number_format(2) }}</h3>
+                        </div>
+                        <div class="col-12 col-sm-4 mt-4">
+                            <a class="btn btn-primary" href="{{ path('transaction_show') }}" target="_blank">
+                                <i class="fa fa-plus"></i> {{ "Add new transaction"|trans }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
