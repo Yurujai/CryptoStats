@@ -37,6 +37,13 @@ Step 6: Clear cache
 make cache
 </pre>
 
+If you have an error after clear cache do the next lines:
+
+<pre>
+docker exec -it php-fpm sh
+chown -R www-data:www-data var
+</pre>
+
 2. Configuration
 
 This project have .env file where you can modify some variables to set your API Keys.
@@ -56,10 +63,6 @@ BINANCE_API_SECRET={yourBinanceAPISecret}
 BITVAVO_ENABLED=false
 BITVAVO_API_KEY={yourBitvavoAPIKey}
 BITVAVO_API_SECRET={yourBitvavoAPISecret}
-
-COINBASE_ENABLED=false
-COINBASE_API_KEY={yourCoinbaseAPIKey}
-COINBASE_API_SECRET={yourCoinbaseAPISecret}
 
 KUKOIN_ENABLED=false
 KUKOIN_API_KEY={yourKukoinAPIKey}
@@ -93,3 +96,19 @@ The output of this command will be like this
 Get the IP of the key IPAddress and put it on your web browser.
 
 Enjoy!
+
+
+Tips:
+
+1. How to remove all wallets ( to update platform )
+
+```
+{ip}/remove/wallets
+```
+
+2. Add asset info to improve UI
+
+```
+docker exec -it php-fpm sh
+php bin/console crypto:download:symbol:data
+```

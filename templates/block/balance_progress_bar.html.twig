@@ -1,4 +1,8 @@
+{% if balance > 0 %}
 {% set percentage = ((deposit*100)/balance)|number_format(2) %}
+{% else %}
+{% set percentage = 0 %}
+{% endif %}
 {% set rest = 100 - percentage %}
 <div class="col-12 mb-2">
     <div class="progress mb-2" style="height: 2.5rem;">

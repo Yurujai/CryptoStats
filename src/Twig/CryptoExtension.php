@@ -56,7 +56,7 @@ class CryptoExtension extends AbstractExtension
         $amountOfFiat = $this->statsService->amountOfFiat();
 
         return [
-            'percent' => ($amountOfFiat * 100) / $totalAmount,
+            'percent' => ($totalAmount > 0) ? ($amountOfFiat * 100) / $totalAmount : 0,
             'number' => $this->getNumberOfFiat(),
             'amount' => $amountOfFiat,
         ];
@@ -68,7 +68,7 @@ class CryptoExtension extends AbstractExtension
         $amountOfCrypto = $this->statsService->amountOfCrypto();
 
         return [
-            'percent' => ($amountOfCrypto * 100) / $totalAmount,
+            'percent' => ($totalAmount > 0) ? ($amountOfCrypto * 100) / $totalAmount : 0,
             'number' => $this->getNumberOfCrypto(),
             'amount' => $amountOfCrypto,
         ];
@@ -85,7 +85,7 @@ class CryptoExtension extends AbstractExtension
         $amountOfSable = $this->statsService->amountOfStable();
 
         return [
-            'percent' => ($amountOfSable * 100) / $totalAmount,
+            'percent' => ($totalAmount > 0) ? ($amountOfSable * 100) / $totalAmount : 0,
             'number' => $this->getNumberOfStable(),
             'amount' => $amountOfSable,
         ];
