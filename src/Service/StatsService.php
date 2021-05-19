@@ -147,6 +147,24 @@ class StatsService
         return $wallets;
     }
 
+    public function getListOfFiatAndStable(): array
+    {
+        $fiatCoins = CryptoUtils::getListOfFiatCoin();
+        $stableCoins = CryptoUtils::getListOfStableCoin();
+        $criteria = ['symbol' => ['$in' => array_merge($fiatCoins, $stableCoins)]];
+        $global = $this->getTotalAmount(true);
+        $wallets = $this->walletService->aggregateWallets($criteria);
+        foreach ($wallets as $key => $wallet) {
+            $wallets[$key]['percentage'] = (($wallet['totalPrice'] + $wallet['inOrderPrice']) * 100) / $global;
+            $wallets[$key]['total'] = (float) number_format(($wallet['totalPrice'] + $wallet['inOrderPrice']), 2);
+        }
+
+        $keys = array_column($wallets, 'percentage');
+        array_multisort($keys, SORT_DESC, $wallets);
+
+        return $wallets;
+    }
+
     public function getDepositAmount(): float
     {
         return $this->depositService->getTotal();

@@ -20,20 +20,6 @@ class WithdrawController extends AbstractController
     }
 
     /**
-     * @Route("/withdraw/block", name="withdraw_block")
-     */
-    public function block(): Response
-    {
-        $withdraw = $this->withdrawService->getTotal();
-
-        return $this->render('/resources/_block.html.twig', [
-            'headerText' => 'Withdraw',
-            'value' => $withdraw,
-            'icon' => 'fas fa-dollar-sign',
-        ]);
-    }
-
-    /**
      * @Route("/withdraw/remove/{withdraw}", name="withdraw_remove_amount")
      */
     public function remove(string $withdraw): RedirectResponse

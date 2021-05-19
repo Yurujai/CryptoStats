@@ -56,7 +56,6 @@ class StatsController extends AbstractController
             'withdraw' => $withdraw,
             'profit' => $profit
         ]);
-
     }
 
     public function exchanges(): Response
@@ -79,6 +78,15 @@ class StatsController extends AbstractController
         $wallets = $this->statsService->getListOfCrypto();
 
         return $this->render('/block/wallets.html.twig', [
+            'wallets' => $wallets,
+        ]);
+    }
+
+    public function fiatAndStable(): Response
+    {
+        $wallets = $this->statsService->getListOfFiatAndStable();
+
+        return $this->render('/block/fiat_and_stable.html.twig', [
             'wallets' => $wallets,
         ]);
     }

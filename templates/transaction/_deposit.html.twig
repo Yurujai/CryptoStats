@@ -1,0 +1,72 @@
+<div class="col-lg-6 col-12 mb-4">
+    <div class="card border-left-success shadow h-80" style="min-height: 400px;">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col-12 mr-2">
+                    <div class="text-xs text-success text-uppercase mb-2">
+                        {{ "Add deposit"|trans }}
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12 mr-0 text-center">
+                    <div class="no-gutters align-items-center">
+                        {{ form_start(depositForm)}}
+                        <div class="deposit-form-input">
+                            {{ form_widget(depositForm.amount) }}
+                        </div>
+                        <div class="deposit-form-input">
+                            {{ form_widget(depositForm.symbol) }}
+                        </div>
+                        <div class="deposit-form-input">
+                            {{ form_widget(depositForm.exchange) }}
+                        </div>
+                        <div class="deposit-form-input">
+                            {{ form_widget(depositForm.added) }}
+                        </div>
+                        <div class="deposit-form-input">
+                            <button type="submit" class="btn btn-block btn-primary">{{ "Add"|trans }}</button>
+                        </div>
+                        {{ form_end(depositForm) }}
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <h4 class="text-xs text-success text-uppercase mb-4">
+                        {{ "Total"|trans }}
+                    </h4>
+                    <h2 class="font-weight-bold text-grey-800">
+                        ${{ depositTotal|number_format(2) }}
+                    </h2>
+                </div>
+                <div class="col-12">
+                    <table class="table table-md table-responsive table-striped mt-4">
+                        <thead>
+                        <tr>
+                            <td>{{ "Nº"|trans }}</td>
+                            <td>{{ "Amount"|trans }}</td>
+                            <td>{{ "Symbol"|trans }}</td>
+                            <td>{{ "Exchange"|trans }}</td>
+                            <td>{{ "Added"|trans }}</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for deposit in deposits %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ deposit.amount|number_format(2) }}</td>
+                                <td>{{ deposit.symbol|upper }}</td>
+                                <td>{{ deposit.exchange }}</td>
+                                <td>{{ deposit.added|date('Y-m-d') }}</td>
+                                <td>
+                                    <a title="{{ "Remove"|trans }}" href="{{ path('deposit_remove_amount', {'deposit': deposit.id}) }}">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

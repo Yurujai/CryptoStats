@@ -1,30 +1,13 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{ "Crypto Stats - Deposit"|trans }}{% endblock %}
+{% block title %}{{ "Crypto Stats - Transactions"|trans }}{% endblock %}
 
 {% block body %}
 
     <div class="container-fluid">
-        <div class="row justify-content-md-center">
-{#            {{ render(controller('App\\Controller\\DepositController::block')) }}#}
-{#            {% include "/deposit/_price.html.twig" %}#}
-        </div>
-        <br />
         <div class="row">
-            <div class="col-sm">
-{#                {% include "/transaction/_deposit_form.html.twig" %}#}
-                {% include "/transaction/_deposit_list.html.twig" %}
-            </div>
-            <div class="col-sm">
-                {% include "/transaction/_withdraw_list.html.twig" %}
-            </div>
-
-{#            <div class="col-sm">#}
-{#                {% include "/transaction/_withdraw_form.html.twig" %}#}
-{#            </div>#}
-{#            <div class="col-sm">#}
-{#                {% include "/transaction/_withdraw_list.html.twig" %}#}
-{#            </div>#}
+            {% include "/transaction/_deposit.html.twig" %}
+            {% include "/transaction/_withdraw.html.twig" %}
         </div>
     </div>
 

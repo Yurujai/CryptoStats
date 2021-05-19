@@ -21,6 +21,11 @@
         {% include "_content_top.html.twig" %}
 
         <div class="container-fluid">
+
+            <div class="row">
+                {{ render(controller('App\\Controller\\StatsController::balanceProgressBar')) }}
+            </div>
+
             {% block body %}{% endblock %}
         </div>
 

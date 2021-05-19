@@ -67,8 +67,7 @@
                             <h3>${{ withdraw|number_format(2) }}</h3>
                         </div>
                         <div class="col-12 col-sm-4 mt-4">
-                            <small class="text-success" style="display:none">Test</small>
-                            <a class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            <a class="btn btn-primary" href="{{ path('transaction_show') }}" target="_blank">
                                 <i class="fa fa-plus"></i> {{ "Add new transaction"|trans }}
                             </a>
                         </div>

@@ -1,6 +1,12 @@
-FROM php:7.3.28-alpine
+FROM php-fpm
 
 ADD ./docker/jobs/crontab /crontab
+
+# Install crontab
+RUN set -eux; \
+    apt-get update \
+    && apt-get -y install cron
+
 RUN /usr/bin/crontab /crontab
 
-CMD ["/usr/sbin/crond","-f","-l","8"]
+CMD ["cron","-f"]
