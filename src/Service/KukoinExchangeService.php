@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Utils\KukoinExchangeUtils;
-use App\Utils\PriceConversionUtils;
 use KuCoin\SDK\Auth;
 use KuCoin\SDK\PrivateApi\Account;
 use KuCoin\SDK\PublicApi\Currency;

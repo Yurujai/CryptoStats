@@ -43,25 +43,24 @@ class DownloadSymbolDataCommand extends Command
             'sparkline' => false,
         ];
 
-        $apiURL = "https://api.coingecko.com/api/v3/coins/markets?";
+        $apiURL = 'https://api.coingecko.com/api/v3/coins/markets?';
         do {
             $params['page'] = $page;
-            $url = $apiURL . http_build_query($params);
+            $url = $apiURL.http_build_query($params);
             $response = $this->client->request(
                 'GET',
                 $url
             );
 
-            foreach($response->toArray() as $element) {
-                $market = new Market($element['id'],$element['name'], $element['symbol'],$element['image']);
+            foreach ($response->toArray() as $element) {
+                $market = new Market($element['id'], $element['name'], $element['symbol'], $element['image']);
                 $this->documentManager->persist($market);
             }
 
             $this->documentManager->flush();
-            $page += 1;
-        } while(count($response->toArray()) > 0);
+            ++$page;
+        } while (count($response->toArray()) > 0);
 
         return 0;
     }
-
 }

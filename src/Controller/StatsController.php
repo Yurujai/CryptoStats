@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Service\BinanceExchangeService;
-use App\Service\BitvavoExchangeService;
-use App\Service\GateIOExchangeService;
-use App\Service\KukoinExchangeService;
 use App\Service\StatsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,7 +50,7 @@ class StatsController extends AbstractController
             'balance' => $balance,
             'deposit' => $deposit,
             'withdraw' => $withdraw,
-            'profit' => $profit
+            'profit' => $profit,
         ]);
     }
 
@@ -64,6 +60,7 @@ class StatsController extends AbstractController
         $labels = array_keys($data);
         $values = array_values($data);
         $total = array_sum($values);
+
         return $this->render('/block/exchange.html.twig', [
             'title' => 'Exchange balance',
             'data' => $data,

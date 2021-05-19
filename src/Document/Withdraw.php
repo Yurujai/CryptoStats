@@ -143,16 +143,16 @@ class Withdraw
 
     public function isFiatCoin(): bool
     {
-        return $this->type === self::WITHDRAW_TYPE_FIAT;
+        return self::WITHDRAW_TYPE_FIAT === $this->type;
     }
 
     public function isStableCoin(): bool
     {
-        return $this->type === self::WITHDRAW_TYPE_STABLE;
+        return self::WITHDRAW_TYPE_STABLE === $this->type;
     }
 
     public function isCrypto(): bool
     {
-        return $this->type === self::WITHDRAW_TYPE_CRYPTO;
+        return self::WITHDRAW_TYPE_CRYPTO === $this->type;
     }
 }

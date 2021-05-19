@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Document\Wallet;
 use App\Document\Withdraw;
-use App\Utils\CryptoUtils;
 use App\Utils\PriceConversionUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use MongoDB\BSON\ObjectId;
@@ -19,8 +17,7 @@ class WithdrawService
     public function __construct(
         DocumentManager $documentManager,
         PriceService $priceService
-    )
-    {
+    ) {
         $this->documentManager = $documentManager;
         $this->priceService = $priceService;
     }
@@ -54,17 +51,17 @@ class WithdrawService
         $total = 0;
         $withdraws = $this->documentManager->getRepository(Withdraw::class)->findAll();
 
-        foreach($withdraws as $withdraw) {
-            if($withdraw->isFiatCoin()) {
-                $price = ($withdraw->getSymbol() === 'eur') ? PriceConversionUtils::getUSDFromEUR($withdraw->getAmount()) : $withdraw->getAmount();
+        foreach ($withdraws as $withdraw) {
+            if ($withdraw->isFiatCoin()) {
+                $price = ('eur' === $withdraw->getSymbol()) ? PriceConversionUtils::getUSDFromEUR($withdraw->getAmount()) : $withdraw->getAmount();
                 $total += $price;
             }
 
-            if($withdraw->isStableCoin()) {
+            if ($withdraw->isStableCoin()) {
                 $total += $withdraw->getAmount();
             }
 
-            if($withdraw->isCrypto()) {
+            if ($withdraw->isCrypto()) {
                 $amount = $withdraw->getAmount();
                 $total += $amount * $this->priceService->getPriceOfSymbol($withdraw->getSymbol());
             }

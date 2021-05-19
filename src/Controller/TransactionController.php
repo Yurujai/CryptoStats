@@ -20,8 +20,7 @@ class TransactionController extends AbstractController
     public function __construct(
         DepositService $depositService,
         WithdrawService $withdrawService
-    )
-    {
+    ) {
         $this->depositService = $depositService;
         $this->withdrawService = $withdrawService;
     }
@@ -67,7 +66,7 @@ class TransactionController extends AbstractController
             'depositTotal' => $depositAmount,
             'withdrawTotal' => $withdrawAmount,
             'depositForm' => $depositForm->createView(),
-            'withdrawForm' => $withdrawForm->createView()
+            'withdrawForm' => $withdrawForm->createView(),
         ]);
     }
 }

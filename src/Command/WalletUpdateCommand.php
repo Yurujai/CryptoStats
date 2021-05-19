@@ -51,5 +51,4 @@ class WalletUpdateCommand extends Command
 
         return 0;
     }
-
 }

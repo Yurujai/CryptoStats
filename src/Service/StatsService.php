@@ -30,7 +30,7 @@ class StatsService
             $amount += $wallet['totalPrice'] + $wallet['inOrderPrice'];
         }
 
-        if($addWithdraw) {
+        if ($addWithdraw) {
             $amount += $this->withdrawService->getTotal();
         }
 
@@ -41,8 +41,8 @@ class StatsService
     {
         $exchanges = $this->walletService->getExchanges();
         $data = [];
-        foreach($exchanges as $exchange) {
-            $data[$exchange] =$this->getTotalAmount(false, $exchange);
+        foreach ($exchanges as $exchange) {
+            $data[$exchange] = $this->getTotalAmount(false, $exchange);
         }
 
         return $data;
@@ -54,7 +54,7 @@ class StatsService
 
         $deposit = $this->depositService->getTotal();
 
-        if($deposit == 0) {
+        if (0 == $deposit) {
             return 0;
         }
 
@@ -169,9 +169,9 @@ class StatsService
     {
         return $this->depositService->getTotal();
     }
+
     public function getWithdrawAmount(): float
     {
         return $this->withdrawService->getTotal();
     }
-
 }

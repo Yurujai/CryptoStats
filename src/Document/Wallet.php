@@ -2,8 +2,8 @@
 
 namespace App\Document;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use App\Utils\CryptoUtils;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use MongoDB\BSON\ObjectId;
 
 /**
@@ -174,16 +174,16 @@ class Wallet
 
     public function isFiatCoin(): bool
     {
-        return $this->type === self::WALLET_TYPE_FIAT;
+        return self::WALLET_TYPE_FIAT === $this->type;
     }
 
     public function isStableCoin(): bool
     {
-        return $this->type === self::WALLET_TYPE_STABLE;
+        return self::WALLET_TYPE_STABLE === $this->type;
     }
 
     public function isCrypto(): bool
     {
-        return $this->type === self::WALLET_TYPE_CRYPTO;
+        return self::WALLET_TYPE_CRYPTO === $this->type;
     }
 }

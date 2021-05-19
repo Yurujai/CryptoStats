@@ -22,7 +22,7 @@ class MarketService
             'symbol' => $symbol,
         ]);
 
-        if($market instanceof Market) {
+        if ($market instanceof Market) {
             return $market;
         }
 

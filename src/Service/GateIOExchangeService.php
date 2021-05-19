@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Utils\GateioExchangeUtils;
-use App\Utils\PriceConversionUtils;
 use GateApi\Api\SpotApi;
 use GateApi\Configuration;
 use GuzzleHttp\Client;

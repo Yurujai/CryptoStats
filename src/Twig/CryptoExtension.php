@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use App\Document\Market;
-use App\Service\BinanceExchangeService;
 use App\Service\MarketService;
 use App\Service\StatsService;
 use Twig\Extension\AbstractExtension;
@@ -19,8 +17,7 @@ class CryptoExtension extends AbstractExtension
     public function __construct(
         StatsService $statsService,
         MarketService $marketService
-    )
-    {
+    ) {
         $this->statsService = $statsService;
         $this->marketService = $marketService;
     }
@@ -35,7 +32,6 @@ class CryptoExtension extends AbstractExtension
             new TwigFunction('data_of_stable', [$this, 'getDataOfStable']),
             new TwigFunction('data_of_crypto', [$this, 'getDataOfCrypto']),
             new TwigFunction('info_of_asset', [$this, 'getInfoOfAsset']),
-
         ];
     }
 
@@ -72,7 +68,7 @@ class CryptoExtension extends AbstractExtension
         $amountOfCrypto = $this->statsService->amountOfCrypto();
 
         return [
-            'percent' =>  ($amountOfCrypto * 100) / $totalAmount,
+            'percent' => ($amountOfCrypto * 100) / $totalAmount,
             'number' => $this->getNumberOfCrypto(),
             'amount' => $amountOfCrypto,
         ];
@@ -82,7 +78,6 @@ class CryptoExtension extends AbstractExtension
     {
         return $this->marketService->getInfoOfAsset($symbol);
     }
-
 
     public function getDataOfStable(): array
     {

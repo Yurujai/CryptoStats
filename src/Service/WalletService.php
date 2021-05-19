@@ -30,8 +30,8 @@ class WalletService
             $wallet = $this->new($exchangeName, $symbol, $available, $inOrder, $updated, $price);
             $this->saveOnMemory($wallet);
         } else {
-            $wallet->setAmount((float)$available);
-            $wallet->setInOrder((float)$inOrder);
+            $wallet->setAmount((float) $available);
+            $wallet->setInOrder((float) $inOrder);
             $wallet->setTypeFromSymbol($symbol);
             $wallet->setUpdated($updated);
             $wallet->setPrice($price);
@@ -51,8 +51,8 @@ class WalletService
         return new Wallet(
             $exchangeName,
             $symbol,
-            (float)$available,
-            (float)$inOrder,
+            (float) $available,
+            (float) $inOrder,
             $updated,
             $price
         );
@@ -75,7 +75,7 @@ class WalletService
     {
         return $this->documentManager->getRepository(Wallet::class)->findOneBy(
             [
-                'symbol'   => strtolower($symbol),
+                'symbol' => strtolower($symbol),
                 'exchange' => $exchangeName,
             ]
         );
@@ -112,12 +112,12 @@ class WalletService
 
         $pipeline[] = [
             '$group' => [
-                '_id'        => '$symbol',
-                'amount'     => ['$sum' => '$amount'],
-                'exchange'   => ['$addToSet' => '$exchange'],
-                'totalPrice'   => ['$sum' => ['$multiply' => ['$price', '$amount']]],
+                '_id' => '$symbol',
+                'amount' => ['$sum' => '$amount'],
+                'exchange' => ['$addToSet' => '$exchange'],
+                'totalPrice' => ['$sum' => ['$multiply' => ['$price', '$amount']]],
                 'inOrderPrice' => ['$sum' => ['$multiply' => ['$price', '$inOrder']]],
-                'inOrder'    => ['$sum' => '$inOrder'],
+                'inOrder' => ['$sum' => '$inOrder'],
             ],
         ];
 
@@ -161,7 +161,7 @@ class WalletService
 
         $pipeline[] = [
             '$project' => [
-                'totalPrice'      => ['$sum' => ['$multiply' => ['$price', '$amount']]],
+                'totalPrice' => ['$sum' => ['$multiply' => ['$price', '$amount']]],
                 'inOrderPrice' => ['$sum' => ['$multiply' => ['$price', '$inOrder']]],
             ],
         ];
@@ -187,7 +187,7 @@ class WalletService
 
         $pipeline[] = [
             '$group' => [
-                '_id'   => '$symbol',
+                '_id' => '$symbol',
                 'total' => ['$sum' => 1],
             ],
         ];
