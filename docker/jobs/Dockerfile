@@ -1,6 +1,6 @@
 FROM php-fpm
 
-ADD ./docker/jobs/crontab /crontab
+ADD ./docker/jobs/crontab /etc/crontab
 
 # Install crontab
 RUN set -eux; \

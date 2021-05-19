@@ -11,9 +11,9 @@
                             <thead>
                             <tr class="text-left">
                                 <td style="width:5%">#</td>
-                                <td style="width:20%">{{ "Name"|trans }}</td>
+                                <td style="width:30%">{{ "Name"|trans }}</td>
                                 <td style="width:20%">{{ "Amount"|trans }}</td>
-                                <td style="width:20%">{{ "Holdings"|trans }}</td>
+                                <td style="width:10%">{{ "Holdings"|trans }}</td>
                                 <td style="width:35%">{{ "% Portfolio"|trans }}</td>
                             </tr>
                             </thead>
@@ -22,7 +22,9 @@
                                 <tr class="text-left">
                                     <td>{{ loop.index }}</td>
                                     <td>
-                                        {{ item._id|upper}}
+                                        {% set symbolData = info_of_asset(item._id) %}
+                                        <img alt="{{ symbolData.name|default('N/D') }}" src="{{ symbolData.image|default('') }}" class="img-responsive rounded" style="max-width: 25px;"/>
+                                        {{ symbolData.name|default('N/D') }} <small class="text-secondary">{{ item._id|upper}}</small>
                                     </td>
                                     <td class="font-weight-bold">{{ (item.amount + item.inOrder)|number_format(8) }}</td>
                                     <td class="font-weight-bold text-success">${{ (item.totalPrice + item.inOrderPrice)|number_format(2) }}</td>

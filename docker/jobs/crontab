@@ -1,1 +1,1 @@
-*/5 * * * * php /application/bin/console crypto:wallet:update
+* * * * * root php bin/console crypto:wallet:update
