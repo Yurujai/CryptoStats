@@ -11,9 +11,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class DownloadSymbolDataCommand extends Command
+class DownloadMarketDataCommand extends Command
 {
-    protected static $defaultName = 'crypto:download:symbol:data';
+    protected static $defaultName = 'crypto:download:market';
     private $client;
     private $documentManager;
 
@@ -27,13 +27,15 @@ class DownloadSymbolDataCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Download symbol data')
-            ->setHelp('Download symbol data')
+            ->setDescription('Download market data')
+            ->setHelp('Download market data')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->removePreviousMarkets();
+
         $page = 1;
         $params = [
             'vs_currency' => 'usd',
@@ -45,6 +47,7 @@ class DownloadSymbolDataCommand extends Command
 
         $apiURL = 'https://api.coingecko.com/api/v3/coins/markets?';
         do {
+            sleep(1);
             $params['page'] = $page;
             $url = $apiURL.http_build_query($params);
             $response = $this->client->request(
@@ -53,7 +56,7 @@ class DownloadSymbolDataCommand extends Command
             );
 
             foreach ($response->toArray() as $element) {
-                $market = new Market($element['id'], $element['name'], $element['symbol'], $element['image']);
+                $market = new Market($element['id'], $element['name'], $element['symbol'], $element['image'], true);
                 $this->documentManager->persist($market);
             }
 
@@ -62,5 +65,14 @@ class DownloadSymbolDataCommand extends Command
         } while (count($response->toArray()) > 0);
 
         return 0;
+    }
+
+    private function removePreviousMarkets()
+    {
+        $this->documentManager->createQueryBuilder(Market::class)
+            ->field('imported')->equals(true)
+            ->remove()
+            ->getQuery()
+            ->execute();
     }
 }

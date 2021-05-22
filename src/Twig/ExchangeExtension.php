@@ -13,6 +13,7 @@ class ExchangeExtension extends AbstractExtension
     {
         return [
             new TwigFunction('is_exchange_enabled', [$this, 'isExchangeEnabled']),
+            new TwigFunction('info_of_exchange', [$this, 'getInfoOfExchange']),
         ];
     }
 
@@ -21,5 +22,9 @@ class ExchangeExtension extends AbstractExtension
         $className = 'App\Utils\\'.ucfirst($exchange).'ExchangeUtils';
 
         return $className::isEnabled();
+    }
+
+    public function getInfoOfExchange(string $exchange)
+    {
     }
 }

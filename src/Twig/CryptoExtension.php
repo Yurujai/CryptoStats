@@ -76,6 +76,22 @@ class CryptoExtension extends AbstractExtension
 
     public function getInfoOfAsset(string $symbol)
     {
+        if ('eur' === strtolower($symbol)) {
+            return [
+                'name' => 'Euro',
+                'symbol' => 'eur',
+                'image' => 'https://e7.pngegg.com/pngimages/988/391/png-clipart-euro-sign-currency-symbol-icon-euro-logo-text-logo.png',
+            ];
+        }
+
+        if ('usd' === strtolower($symbol)) {
+            return [
+                'name' => 'Dollar',
+                'symbol' => 'usd',
+                'image' => 'https://cdn3.iconfinder.com/data/icons/pyconic-icons-3-1/512/dollar-512.png',
+            ];
+        }
+
         return $this->marketService->getInfoOfAsset($symbol);
     }
 

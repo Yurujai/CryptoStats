@@ -6,9 +6,9 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use MongoDB\BSON\ObjectId;
 
 /**
- * @MongoDB\Document(repositoryClass="App\Repository\MarketRepository")
+ * @MongoDB\Document(repositoryClass="App\Repository\ExchangeRepository")
  */
-class Market
+class Exchange
 {
     /**
      * @MongoDB\Id
@@ -28,25 +28,25 @@ class Market
     /**
      * @MongoDB\Field(type="string")
      */
-    private $symbol;
+    private $image;
 
     /**
      * @MongoDB\Field(type="string")
      */
-    private $image;
+    private $url;
 
     /**
      * @MongoDB\Field(type="bool")
      */
     private $imported;
 
-    public function __construct(string $alternativeId, string $name, string $symbol, string $image, bool $imported)
+    public function __construct(string $alternativeId, string $name, string $image, string $url, bool $imported)
     {
         $this->id = new ObjectId();
         $this->alternativeId = $alternativeId;
         $this->name = $name;
-        $this->symbol = $symbol;
         $this->image = $image;
+        $this->url = $url;
         $this->imported = $imported;
     }
 
@@ -75,16 +75,6 @@ class Market
         $this->name = $name;
     }
 
-    public function getSymbol(): string
-    {
-        return $this->symbol;
-    }
-
-    public function setSymbol(string $symbol): void
-    {
-        $this->symbol = $symbol;
-    }
-
     public function getImage(): string
     {
         return $this->image;
@@ -93,6 +83,16 @@ class Market
     public function setImage(string $image): void
     {
         $this->image = $image;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): void
+    {
+        $this->url = $url;
     }
 
     public function isImported(): bool

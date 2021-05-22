@@ -110,5 +110,5 @@ Tips:
 
 ```
 docker exec -it php-fpm sh
-php bin/console crypto:download:symbol:data
+php bin/console crypto:download:market:data
 ```
