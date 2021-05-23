@@ -1,12 +1,24 @@
 {% if balance > 0 %}
-{% set percentage = ((deposit*100)/balance)|number_format(2) %}
+    {% set percentage = ((deposit*100)/balance)|number_format(2) %}
 {% else %}
-{% set percentage = 0 %}
+    {% set percentage = 0 %}
 {% endif %}
-{% set rest = 100 - percentage %}
+
+{% if percentage > 100 %}
+    {% set percentage = 100 - (percentage - 100) %}
+    {% set rest = -(100 - percentage) %}
+{% else %}
+    {% set rest = 100 - percentage %}
+{% endif %}
 <div class="col-12 mb-2">
     <div class="progress mb-2" style="height: 2.5rem;">
         <div class="progress-bar" role="progressbar" style="width: {{ percentage }}%" aria-valuemax="100">{{ percentage ~ '% of Deposits'|trans }}</div>
-        <div class="progress-bar bg-success" role="progressbar" style="width: {{ rest }}%" aria-valuemax="100">{{ rest ~ '% of benefits'|trans }}</div>
+        <div class="progress-bar {% if rest > 0 %}bg-success{% else %}bg-danger{% endif %}" role="progressbar" style="width: {{ rest|abs }}%" aria-valuemax="100">
+            {% if rest > 0 %}
+                {{ rest|abs  ~ '% of benefits'|trans }}
+            {% else %}
+                {{ rest|abs  ~ '% lost'|trans }}
+            {% endif %}
+        </div>
     </div>
 </div>
